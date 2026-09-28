@@ -3,7 +3,7 @@
    calendar.html / train.html 양쪽에서 재사용. */
 (function () {
   var PER_ROW = 10, X0 = 74, COL = 66, TOP = 26, ROWGAP = 90;
-  var CUP = "#2b7de9", CDOWN = "#1fa463";
+  var CUP = "#2b7de9", CDOWN = "#1fa463", CRED = "#e5484d";
   var SUSONGMOT = { "어린이세상": 1, "황금": 1, "수성못": 1, "지산": 1, "범물": 1, "용지": 1 };
   var DATA = null, W = 0, H = 0, XY = {}, svg = null, sub = null, HOL = {}, FORCE = null;
 
@@ -80,13 +80,14 @@
       for (var tid in tr) {
         if (!tr.hasOwnProperty(tid)) continue;
         var pos = stateOf(tr[tid], nowsec); if (!pos) continue; count++;
+        var c2 = (pos.edge === "first" || pos.edge === "last") ? CRED : color;
         var x2, y2, ux = 1, uy = 0;
         if (pos.state === "운행") {
           var a = XY[st[pos.from]], b = XY[st[pos.to]]; if (!a || !b) continue;
           var f = pos.frac || 0; x2 = a[0] + (b[0] - a[0]) * f; y2 = a[1] + (b[1] - a[1]) * f;
           var dx = b[0] - a[0], dy = b[1] - a[1], ln = Math.sqrt(dx * dx + dy * dy) || 1; ux = dx / ln; uy = dy / ln;
         } else { var c = XY[st[pos.at]]; if (!c) continue; x2 = c[0]; y2 = c[1]; }
-        var o = 11 * sign; p.push(icon(x2 + ux * o, y2 + uy * o, color, tid, arrow));
+        var o = 11 * sign; p.push(icon(x2 + ux * o, y2 + uy * o, c2, tid, arrow));
       }
     }
     svg.setAttribute("viewBox", "0 0 " + W + " " + H);
