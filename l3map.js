@@ -5,10 +5,10 @@
   var PER_ROW = 10, X0 = 74, COL = 66, TOP = 118, ROWGAP = 156;
   var CUP = "#2b7de9", CDOWN = "#1fa463";
   var SUSONGMOT = { "어린이세상": 1, "황금": 1, "수성못": 1, "지산": 1, "범물": 1, "용지": 1 };
-  var DATA = null, W = 0, H = 0, XY = {}, svg = null, sub = null, HOL = {};
+  var DATA = null, W = 0, H = 0, XY = {}, svg = null, sub = null, HOL = {}, FORCE = null;
 
   function ymd(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
-  function dayType(d) { if (HOL[ymd(d)]) return "휴일"; var w = d.getDay(); return w === 0 ? "휴일" : (w === 6 ? "토요일" : "평일"); }
+  function dayType(d) { if (FORCE) return FORCE; if (HOL[ymd(d)]) return "휴일"; var w = d.getDay(); return w === 0 ? "휴일" : (w === 6 ? "토요일" : "평일"); }
 
   function splitRuns(evs) {
     var runs = [], cur = [evs[0]];
@@ -102,6 +102,26 @@
     sub.className = "l3-sub";
     sub.textContent = "불러오는 중…";
     box.appendChild(sub);
+    // 요일표 수동 전환 (기본=자동)
+    var bar = document.createElement("div");
+    bar.setAttribute("style", "display:flex;gap:6px;margin:4px 2px 8px;flex-wrap:wrap");
+    var opts = [["", "자동"], ["평일", "평일"], ["토요일", "토요일"], ["휴일", "휴일"]];
+    opts.forEach(function (o) {
+      var b = document.createElement("button");
+      b.type = "button"; b.textContent = o[1];
+      var on = o[0] === "";
+      b.setAttribute("style", "font:600 11px/1 'Noto Sans KR',sans-serif;padding:5px 10px;border-radius:999px;border:1px solid " + (on ? "#2b7de9" : "#cbd6e2") + ";background:" + (on ? "#2b7de9" : "#fff") + ";color:" + (on ? "#fff" : "#5b6b7c") + ";cursor:pointer");
+      b.onclick = function () {
+        FORCE = o[0] || null;
+        Array.prototype.forEach.call(bar.children, function (c) {
+          c.style.background = "#fff"; c.style.color = "#5b6b7c"; c.style.borderColor = "#cbd6e2";
+        });
+        b.style.background = "#2b7de9"; b.style.color = "#fff"; b.style.borderColor = "#2b7de9";
+        render();
+      };
+      bar.appendChild(b);
+    });
+    box.appendChild(bar);
     svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
     svg.setAttribute("style", "display:block;width:100%;height:auto");
