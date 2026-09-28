@@ -2,7 +2,7 @@
    대상 컨테이너: 요소 id="l3map"  (없으면 무동작)
    calendar.html / train.html 양쪽에서 재사용. */
 (function () {
-  var PER_ROW = 10, X0 = 74, COL = 66, TOP = 46, ROWGAP = 100;
+  var PER_ROW = 10, X0 = 74, COL = 66, TOP = 40, ROWGAP = 104;
   var CUP = "#2b7de9", CDOWN = "#1fa463";
   var SUSONGMOT = { "어린이세상": 1, "황금": 1, "수성못": 1, "지산": 1, "범물": 1, "용지": 1 };
   var DATA = null, W = 0, H = 0, XY = {}, svg = null, sub = null, HOL = {}, FORCE = null;
@@ -49,7 +49,7 @@
 
   function layout() {
     var st = DATA.stations, n = st.length, rows = Math.ceil(n / PER_ROW);
-    W = X0 * 2 + (PER_ROW - 1) * COL + 8; H = TOP + (rows - 1) * ROWGAP + 50;
+    W = X0 * 2 + (PER_ROW - 1) * COL + 8; H = TOP + (rows - 1) * ROWGAP + 46;
     for (var i = 0; i < n; i++) {
       var row = Math.floor(i / PER_ROW), j = i % PER_ROW;
       var x = X0 + (row % 2 === 0 ? j : (PER_ROW - 1 - j)) * COL, y = TOP + row * ROWGAP;
@@ -69,7 +69,7 @@
     for (var i = 0; i < st.length; i++) {
       var s = st[i], xy = XY[s], x = xy[0], y = xy[1], hl = SUSONGMOT[s];
       p.push('<circle cx="' + x + '" cy="' + y + '" r="6.5" fill="' + (hl ? "#ffd166" : "#fff") + '" stroke="#2b5c9b" stroke-width="2.4"/>');
-      var ly = y + 21 + (i % 2) * 15;
+      var ly = y + 18 + (i % 2) * 13;
       p.push('<text x="' + x + '" y="' + ly + '" font-size="10.5" text-anchor="middle" font-weight="' + (hl ? "800" : "500") + '" fill="' + (hl ? "#b26a00" : "#33414f") + '">' + s + '</text>');
     }
     var count = 0, dirs = ["up", "down"];
