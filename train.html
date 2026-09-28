@@ -6,95 +6,22 @@
  :root{--up:#2b7de9;--down:#1fa463}
  html,body{margin:0;background:#f4f7fb;font-family:"Noto Sans KR",-apple-system,system-ui,sans-serif;color:#16324f}
  .wrap{max-width:800px;margin:0 auto;padding:14px}
- h1{font-size:19px;margin:6px 0 2px}
- .sub{font-size:12px;color:#5b6b7c}
- .legend{font-size:12px;color:#334;margin:8px 0 4px;display:flex;gap:14px;flex-wrap:wrap}
+ h1{font-size:19px;margin:6px 0 4px}
+ .l3-sub{font-size:12px;color:#5b6b7c;margin:2px 0 8px}
+ .legend{font-size:12px;color:#334;margin:2px 0 8px;display:flex;gap:14px;flex-wrap:wrap}
  .sw{display:inline-block;width:14px;height:9px;border-radius:3px;vertical-align:middle;margin-right:4px}
  .card{background:#fff;border-radius:12px;padding:6px 8px;box-shadow:0 1px 6px rgba(20,50,90,.08)}
- svg{display:block;width:100%;height:auto}
  .foot{font-size:11px;color:#8b98a6;margin-top:8px}
 </style></head>
 <body><div class="wrap">
  <h1>🚝 대구도시철도 3호선 · 열차 위치</h1>
- <div class="sub" id="sub">불러오는 중…</div>
  <div class="legend">
    <span><span class="sw" style="background:var(--up)"></span>상선 용지→칠곡경대병원</span>
    <span><span class="sw" style="background:var(--down)"></span>하선 칠곡경대병원→용지</span>
    <span>🟡 수성못관리역 관할</span>
  </div>
- <div class="card" id="card"><svg id="map" xmlns="http://www.w3.org/2000/svg"></svg></div>
+ <div class="card"><div id="l3map"></div></div>
  <div class="foot">시각표(공공데이터) 기반 <b>추정</b> 위치 · 실제 지연·임시운행 미반영 · 1초마다 자동 갱신</div>
 </div>
-<script>
-const PER_ROW=10, X0=74, COL=66, TOP=118, ROWGAP=156;
-const CUP="#2b7de9", CDOWN="#1fa463";
-const SUSONGMOT=new Set(["어린이세상","황금","수성못","지산","범물","용지"]);
-let DATA=null; let W=0,H=0; const XY={};
-function dayType(d){const w=d.getDay();return w===0?"휴일":(w===6?"토요일":"평일");}
-function splitRuns(evs){const runs=[];let cur=[evs[0]];for(let i=1;i<evs.length;i++){if(evs[i][0]-cur[cur.length-1][0]>1800){runs.push(cur);cur=[evs[i]];}else cur.push(evs[i]);}runs.push(cur);return runs;}
-function stateOf(evs,nowsec){
-  for(const run of splitRuns(evs)){
-    if(nowsec<run[0][0]||nowsec>run[run.length-1][0]) continue;
-    let pos=null;
-    for(let i=0;i<run.length;i++){
-      const [t0,s0,g0]=run[i]; if(t0>nowsec) break;
-      const nxt=run[i+1];
-      if(nxt){const [t1,s1,g1]=nxt;
-        if(g0===0&&s1===s0&&g1===1){pos={state:"정차",at:s0,eta:t1-nowsec};}
-        else if(g0===1){const seg=t1-t0;let fr=seg>0?(nowsec-t0)/seg:0;fr=Math.max(0,Math.min(1,fr));pos={state:"운행",from:s0,to:s1,eta:t1-nowsec,frac:fr};}
-        else{pos={state:"정차",at:s0,next:s1,eta:t1-nowsec};}
-      } else {pos={state:"종착",at:s0,eta:0};}
-    }
-    if(pos) return pos;
-  }
-  return null;
-}
-function icon(x,y,color,num,arrow){
-  return `<g><circle cx="${x}" cy="${y}" r="11" fill="${color}" stroke="#fff" stroke-width="1.5"/>
-  <text x="${x}" y="${y+3.4}" font-size="9.5" text-anchor="middle" fill="#fff" font-weight="700">${num}</text>
-  <text x="${x}" y="${y-15}" font-size="9.5" text-anchor="middle" fill="${color}">${arrow}</text></g>`;
-}
-function layout(){
-  const st=DATA.stations, n=st.length, rows=Math.ceil(n/PER_ROW);
-  W=X0*2+(PER_ROW-1)*COL+8; H=TOP+(rows-1)*ROWGAP+78;
-  st.forEach((s,i)=>{const row=Math.floor(i/PER_ROW), j=i%PER_ROW;
-    const x=X0+(row%2===0?j:(PER_ROW-1-j))*COL, y=TOP+row*ROWGAP; XY[s]=[x,y];});
-}
-function render(){
-  const now=new Date();
-  const st=DATA.stations;
-  const nowsec=now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
-  const dt=dayType(now);
-  let p=[];
-  p.push(`<rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/>`);
-  const pts=st.map(s=>XY[s].join(",")).join(" ");
-  p.push(`<polyline points="${pts}" fill="none" stroke="#9fb4c9" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>`);
-  st.forEach((s,i)=>{const [x,y]=XY[s]; const hl=SUSONGMOT.has(s);
-    p.push(`<circle cx="${x}" cy="${y}" r="6.5" fill="${hl?"#ffd166":"#fff"}" stroke="#2b5c9b" stroke-width="2.4"/>`);
-    const ly=y+21+(i%2)*15;
-    p.push(`<text x="${x}" y="${ly}" font-size="10.5" text-anchor="middle" font-weight="${hl?"800":"500"}" fill="${hl?"#b26a00":"#33414f"}">${s}</text>`);});
-  let count=0;
-  for(const dkey of ["up","down"]){
-    const tr=(DATA.sched[dkey][dt])||{};
-    const color=dkey==="up"?CUP:CDOWN, arrow=dkey==="up"?"▲":"▼", sign=dkey==="up"?1:-1;
-    for(const tid in tr){
-      const pos=stateOf(tr[tid],nowsec); if(!pos) continue; count++;
-      let x,y,ux=1,uy=0;
-      if(pos.state==="운행"){const a=XY[st[pos.from]],b=XY[st[pos.to]]; if(!a||!b)continue;
-        const f=pos.frac||0; x=a[0]+(b[0]-a[0])*f; y=a[1]+(b[1]-a[1])*f;
-        const dx=b[0]-a[0],dy=b[1]-a[1],ln=Math.hypot(dx,dy)||1; ux=dx/ln; uy=dy/ln;
-      } else {const a=XY[st[pos.at]]; if(!a)continue; x=a[0]; y=a[1];}
-      const o=11*sign; p.push(icon(x+ux*o,y+uy*o,color,tid,arrow));
-    }
-  }
-  const svg=document.getElementById("map");
-  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
-  document.getElementById("card").style.aspectRatio=`${W}/${H}`;
-  svg.setAttribute("style",`aspect-ratio:${W}/${H}`);
-  svg.innerHTML=p.join("");
-  const t=now.toLocaleString("ko-KR",{hour12:false});
-  document.getElementById("sub").textContent=`${t} · ${dt} · 운행 중 ${count}편 (추정)`;
-}
-fetch("train_data.json").then(r=>r.json()).then(d=>{DATA=d;layout();render();setInterval(render,1000);})
- .catch(e=>{document.getElementById("sub").textContent="데이터 로드 실패: "+e;});
-</script></body></html>
+<script src="l3map.js"></script>
+</body></html>
