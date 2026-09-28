@@ -5,7 +5,7 @@
 <style>
  :root{--up:#2b7de9;--down:#1fa463}
  html,body{margin:0;background:#f4f7fb;font-family:"Noto Sans KR",-apple-system,system-ui,sans-serif;color:#16324f}
- .wrap{max-width:640px;margin:0 auto;padding:14px}
+ .wrap{max-width:800px;margin:0 auto;padding:14px}
  h1{font-size:19px;margin:6px 0 2px}
  .sub{font-size:12px;color:#5b6b7c}
  .legend{font-size:12px;color:#334;margin:8px 0 4px;display:flex;gap:14px;flex-wrap:wrap}
@@ -22,14 +22,14 @@
    <span><span class="sw" style="background:var(--down)"></span>하선 칠곡경대병원→용지</span>
    <span>🟡 수성못관리역 관할</span>
  </div>
- <div class="card"><svg id="map" xmlns="http://www.w3.org/2000/svg"></svg></div>
+ <div class="card" id="card"><svg id="map" xmlns="http://www.w3.org/2000/svg"></svg></div>
  <div class="foot">시각표(공공데이터) 기반 <b>추정</b> 위치 · 실제 지연·임시운행 미반영 · 1초마다 자동 갱신</div>
 </div>
 <script>
-const W=600, TOP=40, STEP=46, LINE_X=330;
+const PER_ROW=10, X0=74, COL=66, TOP=118, ROWGAP=156;
 const CUP="#2b7de9", CDOWN="#1fa463";
-let DATA=null;
-const ys={};
+const SUSONGMOT=new Set(["어린이세상","황금","수성못","지산","범물","용지"]);
+let DATA=null; let W=0,H=0; const XY={};
 function dayType(d){const w=d.getDay();return w===0?"휴일":(w===6?"토요일":"평일");}
 function splitRuns(evs){const runs=[];let cur=[evs[0]];for(let i=1;i<evs.length;i++){if(evs[i][0]-cur[cur.length-1][0]>1800){runs.push(cur);cur=[evs[i]];}else cur.push(evs[i]);}runs.push(cur);return runs;}
 function stateOf(evs,nowsec){
@@ -50,45 +50,51 @@ function stateOf(evs,nowsec){
   return null;
 }
 function icon(x,y,color,num,arrow){
-  const x0=x-17,y0=y-8;
-  return `<g><rect x="${x0}" y="${y0}" width="34" height="16" rx="5" fill="${color}" stroke="#12324f" stroke-width="1"/>
-  <rect x="${x0+4}" y="${y0+3}" width="7" height="6" rx="1.5" fill="#eaf4ff"/>
-  <rect x="${x0+14}" y="${y0+3}" width="7" height="6" rx="1.5" fill="#eaf4ff"/>
-  <rect x="${x0+24}" y="${y0+3}" width="6" height="6" rx="1.5" fill="#eaf4ff"/>
-  <circle cx="${x0+8}" cy="${y0+16}" r="2.4" fill="#12324f"/><circle cx="${x0+26}" cy="${y0+16}" r="2.4" fill="#12324f"/>
-  <text x="${x0-3}" y="${y+4}" font-size="10" text-anchor="end" fill="${color}">${arrow}</text>
-  <text x="${x}" y="${y+27}" font-size="9.5" text-anchor="middle" fill="${color}" font-weight="700">${num}</text></g>`;
+  return `<g><circle cx="${x}" cy="${y}" r="11" fill="${color}" stroke="#fff" stroke-width="1.5"/>
+  <text x="${x}" y="${y+3.4}" font-size="9.5" text-anchor="middle" fill="#fff" font-weight="700">${num}</text>
+  <text x="${x}" y="${y-15}" font-size="9.5" text-anchor="middle" fill="${color}">${arrow}</text></g>`;
+}
+function layout(){
+  const st=DATA.stations, n=st.length, rows=Math.ceil(n/PER_ROW);
+  W=X0*2+(PER_ROW-1)*COL+8; H=TOP+(rows-1)*ROWGAP+78;
+  st.forEach((s,i)=>{const row=Math.floor(i/PER_ROW), j=i%PER_ROW;
+    const x=X0+(row%2===0?j:(PER_ROW-1-j))*COL, y=TOP+row*ROWGAP; XY[s]=[x,y];});
 }
 function render(){
   const now=new Date();
-  const st=DATA.stations, n=st.length, H=TOP+(n-1)*STEP+46;
+  const st=DATA.stations;
   const nowsec=now.getHours()*3600+now.getMinutes()*60+now.getSeconds();
   const dt=dayType(now);
-  st.forEach((s,i)=>ys[s]=TOP+i*STEP);
   let p=[];
   p.push(`<rect x="0" y="0" width="${W}" height="${H}" fill="#fff"/>`);
-  p.push(`<line x1="${LINE_X}" y1="${ys[st[0]]}" x2="${LINE_X}" y2="${ys[st[n-1]]}" stroke="#9fb4c9" stroke-width="9" stroke-linecap="round"/>`);
-  for(const s of st){const y=ys[s];
-    p.push(`<circle cx="${LINE_X}" cy="${y}" r="6.5" fill="#fff" stroke="#2b5c9b" stroke-width="2.5"/>`);
-    p.push(`<text x="${LINE_X+18}" y="${y+4.5}" font-size="13.5" fill="#33414f">${s}</text>`);}
+  const pts=st.map(s=>XY[s].join(",")).join(" ");
+  p.push(`<polyline points="${pts}" fill="none" stroke="#9fb4c9" stroke-width="9" stroke-linejoin="round" stroke-linecap="round"/>`);
+  st.forEach((s,i)=>{const [x,y]=XY[s]; const hl=SUSONGMOT.has(s);
+    p.push(`<circle cx="${x}" cy="${y}" r="6.5" fill="${hl?"#ffd166":"#fff"}" stroke="#2b5c9b" stroke-width="2.4"/>`);
+    const ly=y+21+(i%2)*15;
+    p.push(`<text x="${x}" y="${ly}" font-size="10.5" text-anchor="middle" font-weight="${hl?"800":"500"}" fill="${hl?"#b26a00":"#33414f"}">${s}</text>`);});
   let count=0;
   for(const dkey of ["up","down"]){
     const tr=(DATA.sched[dkey][dt])||{};
-    const color=dkey==="up"?CUP:CDOWN, arrow=dkey==="up"?"▲":"▼";
+    const color=dkey==="up"?CUP:CDOWN, arrow=dkey==="up"?"▲":"▼", sign=dkey==="up"?1:-1;
     for(const tid in tr){
       const pos=stateOf(tr[tid],nowsec); if(!pos) continue; count++;
-      let y;
-      if(pos.state==="운행"){const ya=ys[st[pos.from]],yb=ys[st[pos.to]]; if(ya==null||yb==null)continue; y=ya+(yb-ya)*(pos.frac||0);}
-      else {y=ys[st[pos.at]]; if(y==null)continue;}
-      p.push(icon(LINE_X,y,color,tid,arrow));
+      let x,y,ux=1,uy=0;
+      if(pos.state==="운행"){const a=XY[st[pos.from]],b=XY[st[pos.to]]; if(!a||!b)continue;
+        const f=pos.frac||0; x=a[0]+(b[0]-a[0])*f; y=a[1]+(b[1]-a[1])*f;
+        const dx=b[0]-a[0],dy=b[1]-a[1],ln=Math.hypot(dx,dy)||1; ux=dx/ln; uy=dy/ln;
+      } else {const a=XY[st[pos.at]]; if(!a)continue; x=a[0]; y=a[1];}
+      const o=11*sign; p.push(icon(x+ux*o,y+uy*o,color,tid,arrow));
     }
   }
-  document.getElementById("map").setAttribute("viewBox",`0 0 ${W} ${H}`);
-  document.getElementById("map").setAttribute("height",H);
-  document.getElementById("map").innerHTML=p.join("");
+  const svg=document.getElementById("map");
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  document.getElementById("card").style.aspectRatio=`${W}/${H}`;
+  svg.setAttribute("style",`aspect-ratio:${W}/${H}`);
+  svg.innerHTML=p.join("");
   const t=now.toLocaleString("ko-KR",{hour12:false});
   document.getElementById("sub").textContent=`${t} · ${dt} · 운행 중 ${count}편 (추정)`;
 }
-fetch("train_data.json").then(r=>r.json()).then(d=>{DATA=d;render();setInterval(render,1000);})
+fetch("train_data.json").then(r=>r.json()).then(d=>{DATA=d;layout();render();setInterval(render,1000);})
  .catch(e=>{document.getElementById("sub").textContent="데이터 로드 실패: "+e;});
 </script></body></html>
