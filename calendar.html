@@ -45,6 +45,7 @@
   .l3-sub { font-size:12px; color:#5b6b7c; margin:2px 4px 6px; }
   .l3-legend { display:flex; gap:10px; flex-wrap:wrap; font-size:11.5px; color:var(--muted); margin:1px 4px 5px; }
   .l3-legend .sw { display:inline-block; width:12px; height:8px; border-radius:3px; margin-right:3px; vertical-align:middle; }
+  .l3-hl { font-size:11px; font-weight:500; color:var(--muted); margin-left:5px; }
   #l3map svg { display:block; width:100%; height:auto; }
   footer { max-width:640px; margin:0 auto; padding:0 18px 30px; color:var(--muted); font-size:12px; }
   footer a { color:var(--muted); }
@@ -53,16 +54,15 @@
 <body>
 <header>
   <h1>🌿 땡초의 캘린더</h1>
-  <p class="sub">할일 · 밭일 &nbsp;|&nbsp; 업데이트 2026-09-28 20:24</p>
+  <p class="sub">할일 · 밭일 &nbsp;|&nbsp; 업데이트 2026-09-28 20:45</p>
 </header>
 <main>
   <div class="quote"><div class="q-label">💬 명언</div><div class="q-text"><div>이성이 잠들면 괴물은 깨어난다</div><div>질문하는것이 지혜인시대 ai시대</div><div>나이 먹은 자의 말은 질문이어야하고, 해법이 아닙니다</div></div></div>
-  <h2>🚝 3호선 열차 위치 (라이브)</h2>
+  <h2>🚝 3호선 열차 위치 (라이브)<span class="l3-hl">🟡 수성못관리역 관할(어린이세상~용지)</span></h2>
   <div class="l3wrap">
     <div class="l3-legend">
       <span><span class="sw" style="background:#2b7de9"></span>상선(용지→칠곡경대)</span>
       <span><span class="sw" style="background:#1fa463"></span>하선(칠곡경대→용지)</span>
-      <span>🟡 수성못관리역 관할(어린이세상~용지)</span>
     </div>
     <div id="l3map"></div>
   </div>
