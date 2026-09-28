@@ -5,9 +5,10 @@
   var PER_ROW = 10, X0 = 74, COL = 66, TOP = 118, ROWGAP = 156;
   var CUP = "#2b7de9", CDOWN = "#1fa463";
   var SUSONGMOT = { "어린이세상": 1, "황금": 1, "수성못": 1, "지산": 1, "범물": 1, "용지": 1 };
-  var DATA = null, W = 0, H = 0, XY = {}, svg = null, sub = null;
+  var DATA = null, W = 0, H = 0, XY = {}, svg = null, sub = null, HOL = {};
 
-  function dayType(d) { var w = d.getDay(); return w === 0 ? "휴일" : (w === 6 ? "토요일" : "평일"); }
+  function ymd(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+  function dayType(d) { if (HOL[ymd(d)]) return "휴일"; var w = d.getDay(); return w === 0 ? "휴일" : (w === 6 ? "토요일" : "평일"); }
 
   function splitRuns(evs) {
     var runs = [], cur = [evs[0]];
@@ -106,7 +107,8 @@
     svg.setAttribute("style", "display:block;width:100%;height:auto");
     box.appendChild(svg);
     fetch("train_data.json").then(function (r) { return r.json(); }).then(function (d) {
-      DATA = d; layout(); render(); setInterval(render, 1000);
+      DATA = d; HOL = {}; (d.holidays || []).forEach(function (x) { HOL[x] = 1; });
+      layout(); render(); setInterval(render, 1000);
     }).catch(function (e) { sub.textContent = "데이터 로드 실패: " + e; });
   }
 
