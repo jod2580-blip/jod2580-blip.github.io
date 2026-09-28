@@ -76,11 +76,12 @@
     for (var di = 0; di < 2; di++) {
       var dkey = dirs[di];
       var tr = (DATA.sched[dkey] && DATA.sched[dkey][dt]) || {};
+      var ed = (DATA.edges && DATA.edges[dkey] && DATA.edges[dkey][dt]) || {};
       var color = dkey === "up" ? CUP : CDOWN, arrow = dkey === "up" ? "▲" : "▼", sign = dkey === "up" ? 1 : -1;
       for (var tid in tr) {
         if (!tr.hasOwnProperty(tid)) continue;
         var pos = stateOf(tr[tid], nowsec); if (!pos) continue; count++;
-        var c2 = (pos.edge === "first" || pos.edge === "last") ? CRED : color;
+        var c2 = (tid === ed.first || tid === ed.last) ? CRED : color;
         var x2, y2, ux = 1, uy = 0;
         if (pos.state === "운행") {
           var a = XY[st[pos.from]], b = XY[st[pos.to]]; if (!a || !b) continue;
