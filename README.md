@@ -1,1 +1,3 @@
-# jod2580-blip.github.io
+doori site
+
+<!-- rebuild 2026-11-10T23:30:40 -->
