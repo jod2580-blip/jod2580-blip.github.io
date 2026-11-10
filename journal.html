@@ -52,6 +52,12 @@
   .gallery { display:grid; grid-template-columns:repeat(3,1fr); gap:5px; margin-top:8px; }
   .gallery img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:9px; display:block; }
   .gallery a { display:block; }
+  .lb { position:fixed; inset:0; background:rgba(0,0,0,.92); display:none; z-index:99;
+    align-items:center; justify-content:center; padding:12px; }
+  .lb.on { display:flex; }
+  .lb img { max-width:100%; max-height:100%; border-radius:10px; }
+  .lb .x { position:absolute; top:10px; right:14px; color:#fff; font-size:30px; line-height:1;
+    background:none; border:0; cursor:pointer; padding:6px; }
   .search { display:flex; gap:8px; align-items:center; margin:10px 0 6px; }
   .search input { flex:1; min-width:0; background:var(--card); border:0; border-radius:12px; color:var(--fg);
     padding:9px 12px; font-size:14px; font-family:inherit; box-shadow:0 1px 3px rgba(0,0,0,.18); }
@@ -73,7 +79,7 @@
 <body>
 <header>
   <h1>🌱 작물재배일지</h1>
-  <p class="sub">2026 가을작기 — 배추·무·쪽파 &nbsp;|&nbsp; 업데이트 2026-11-11 00:10</p>
+  <p class="sub">2026 가을작기 — 배추·무·쪽파 &nbsp;|&nbsp; 업데이트 2026-11-11 00:47</p>
   <nav class="menu">
     <a href="index.html">🏠 홈</a>
     <a href="calendar.html">📅 캘린더</a>
@@ -100,13 +106,13 @@
     <button data-tag="계획">계획</button>
   </div>
   <div id="list">
-  <div class="card" data-tag="관찰" data-t="2026-11-10 11-10 (화) 관찰 배추 배추 결구 점검 — 결구 지름 18~24cm(라이터 척도), 잎 조밀하게 말려 결구 상당 진행, 진녹색·시듦 없음, 겉잎 벌레 흔적 경미, 병반·무름병·흰가루 흔적 없음. 11/17 김장 수확 유지 "><div class="card-head"><span class="date">11-10 (화)</span><span class="right"><span class="crop">배추</span><span class="badge soon">D+60</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">배추 결구 점검 — 결구 지름 18~24cm(라이터 척도), 잎 조밀하게 말려 결구 상당 진행, 진녹색·시듦 없음, 겉잎 벌레 흔적 경미, 병반·무름병·흰가루 흔적 없음. 11/17 김장 수확 유지</span><span class="time">23:33</span></div><div class="gallery"><a href="img/2026-11-10_cabbage-1.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/2026-11-10_cabbage-1.jpg" alt=""></a></div></div>
-<div class="card" data-tag="관찰" data-t="2026-11-10 11-10 (화) 관찰 무 무 시식 캐보기 — 어깨 6~7cm(라이터 척도), 표면 매끈·갈라짐 없음, 잎 진녹색 건강(하엽 1~2장 황화), 병반 없음. 11/13 수확 유지 타당 "><div class="card-head"><span class="date">11-10 (화)</span><span class="right"><span class="crop">무</span><span class="badge soon">D+60</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">무 시식 캐보기 — 어깨 6~7cm(라이터 척도), 표면 매끈·갈라짐 없음, 잎 진녹색 건강(하엽 1~2장 황화), 병반 없음. 11/13 수확 유지 타당</span><span class="time">23:28</span></div><div class="gallery"><a href="img/2026-11-10_radish-1.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/2026-11-10_radish-1.jpg" alt=""></a></div></div>
+  <div class="card" data-tag="관찰" data-t="2026-11-10 11-10 (화) 관찰 배추 배추 결구 점검 — 결구 지름 18~24cm(라이터 척도), 잎 조밀하게 말려 결구 상당 진행, 진녹색·시듦 없음, 겉잎 벌레 흔적 경미, 병반·무름병·흰가루 흔적 없음. 11/17 김장 수확 유지 "><div class="card-head"><span class="date">11-10 (화)</span><span class="right"><span class="crop">배추</span><span class="badge soon">D+60</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">배추 결구 점검 — 결구 지름 18~24cm(라이터 척도), 잎 조밀하게 말려 결구 상당 진행, 진녹색·시듦 없음, 겉잎 벌레 흔적 경미, 병반·무름병·흰가루 흔적 없음. 11/17 김장 수확 유지</span><span class="time">23:33</span></div><div class="gallery"><a class="ph" href="img/2026-11-10_cabbage-1.jpg"><img loading="lazy" src="img/2026-11-10_cabbage-1.jpg" alt=""></a></div></div>
+<div class="card" data-tag="관찰" data-t="2026-11-10 11-10 (화) 관찰 무 무 시식 캐보기 — 어깨 6~7cm(라이터 척도), 표면 매끈·갈라짐 없음, 잎 진녹색 건강(하엽 1~2장 황화), 병반 없음. 11/13 수확 유지 타당 "><div class="card-head"><span class="date">11-10 (화)</span><span class="right"><span class="crop">무</span><span class="badge soon">D+60</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">무 시식 캐보기 — 어깨 6~7cm(라이터 척도), 표면 매끈·갈라짐 없음, 잎 진녹색 건강(하엽 1~2장 황화), 병반 없음. 11/13 수확 유지 타당</span><span class="time">23:28</span></div><div class="gallery"><a class="ph" href="img/2026-11-10_radish-1.jpg"><img loading="lazy" src="img/2026-11-10_radish-1.jpg" alt=""></a></div></div>
 <div class="card" data-tag="작업" data-t="2026-11-10 11-10 (화) 작업 무 무 시식 캐보기 + 배추 단수 시작. 어깨 6~8cm면 수확기 판단, 배추는 수확 7~10일 전 단수(저장성·김장 맛) "><div class="card-head"><span class="date">11-10 (화)</span><span class="right"><span class="crop">무</span><span class="badge soon">D+60</span></span></div><div class="body"><span class="tag t-work">작업</span><span class="text">무 시식 캐보기 + 배추 단수 시작. 어깨 6~8cm면 수확기 판단, 배추는 수확 7~10일 전 단수(저장성·김장 맛)</span><span class="time">10:49</span></div></div>
 <div class="card past" data-tag="계획" data-t="2026-11-10 11-10 (화) 계획  무 시식 캐보기 + 배추 단수 시작 — 무 1~2포기 캐서 어깨 6~8cm면 수확기 판단. 배추는 수확 7~10일 전 단수 시작(저장성·김장 맛). 첫 서리 예보 확인 — 무는 서리 전에 우선 수확. "><div class="card-head"><span class="date">11-10 (화)</span><span class="right"><span class="badge soon">D+60</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☑ 무 시식 캐보기 + 배추 단수 시작 — 무 1~2포기 캐서 어깨 6~8cm면 수확기 판단. 배추는 수확 7~10일 전 단수 시작(저장성·김장 맛). 첫 서리 예보 확인 — 무는 서리 전에 우선 수확.</span></div></div>
 <div class="card past" data-tag="계획" data-t="2026-11-08 11-08 (일) 계획  판단: 무 7~10cm까지 여지 있으나 11/14 비 예보 → 11/13 수확 유지(갈라짐·바람들기 예방), 배추 11/17 김장 유지 "><div class="card-head"><span class="date">11-08 (일)</span><span class="right"><span class="badge soon">D+58</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 판단: 무 7~10cm까지 여지 있으나 11/14 비 예보 → 11/13 수확 유지(갈라짐·바람들기 예방), 배추 11/17 김장 유지</span><span class="time">11:45</span></div></div>
-<div class="card" data-tag="관찰" data-t="2026-11-08 11-08 (일) 관찰 무 잎 무성·진녹색, 어깨 굵기 5~7cm, 표면 매끈(갈라짐·병반 없음), 하엽 일부 노화(정상), 부직포 멀칭 유지·토양 촉촉 "><div class="card-head"><span class="date">11-08 (일)</span><span class="right"><span class="crop">무</span><span class="badge soon">D+58</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">잎 무성·진녹색, 어깨 굵기 5~7cm, 표면 매끈(갈라짐·병반 없음), 하엽 일부 노화(정상), 부직포 멀칭 유지·토양 촉촉</span><span class="time">11:40</span></div><div class="gallery"><a href="img/2026-11-08_radish-1.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/2026-11-08_radish-1.jpg" alt=""></a><a href="img/2026-11-08_radish-2.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/2026-11-08_radish-2.jpg" alt=""></a><a href="img/2026-11-08_radish-3.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/2026-11-08_radish-3.jpg" alt=""></a></div></div>
-<div class="card" data-tag="관찰" data-t="2026-11-08 11-08 (일) 관찰 배추 사진 점검 — 2포기 모두 결구 진행(오른쪽 단단·왼쪽 덜 참), 겉잎 벌레 먹은 흔적 경미, 병반 없음, 점적관수 정상 "><div class="card-head"><span class="date">11-08 (일)</span><span class="right"><span class="crop">배추</span><span class="badge soon">D+58</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">사진 점검 — 2포기 모두 결구 진행(오른쪽 단단·왼쪽 덜 참), 겉잎 벌레 먹은 흔적 경미, 병반 없음, 점적관수 정상</span><span class="time">11:33</span></div><div class="gallery"><a href="img/2026-11-08_cabbage-1.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/2026-11-08_cabbage-1.jpg" alt=""></a><a href="img/2026-11-08_cabbage-2.jpg" target="_blank" rel="noopener"><img loading="lazy" src="img/2026-11-08_cabbage-2.jpg" alt=""></a></div></div>
+<div class="card" data-tag="관찰" data-t="2026-11-08 11-08 (일) 관찰 무 잎 무성·진녹색, 어깨 굵기 5~7cm, 표면 매끈(갈라짐·병반 없음), 하엽 일부 노화(정상), 부직포 멀칭 유지·토양 촉촉 "><div class="card-head"><span class="date">11-08 (일)</span><span class="right"><span class="crop">무</span><span class="badge soon">D+58</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">잎 무성·진녹색, 어깨 굵기 5~7cm, 표면 매끈(갈라짐·병반 없음), 하엽 일부 노화(정상), 부직포 멀칭 유지·토양 촉촉</span><span class="time">11:40</span></div><div class="gallery"><a class="ph" href="img/2026-11-08_radish-1.jpg"><img loading="lazy" src="img/2026-11-08_radish-1.jpg" alt=""></a><a class="ph" href="img/2026-11-08_radish-2.jpg"><img loading="lazy" src="img/2026-11-08_radish-2.jpg" alt=""></a><a class="ph" href="img/2026-11-08_radish-3.jpg"><img loading="lazy" src="img/2026-11-08_radish-3.jpg" alt=""></a></div></div>
+<div class="card" data-tag="관찰" data-t="2026-11-08 11-08 (일) 관찰 배추 사진 점검 — 2포기 모두 결구 진행(오른쪽 단단·왼쪽 덜 참), 겉잎 벌레 먹은 흔적 경미, 병반 없음, 점적관수 정상 "><div class="card-head"><span class="date">11-08 (일)</span><span class="right"><span class="crop">배추</span><span class="badge soon">D+58</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">사진 점검 — 2포기 모두 결구 진행(오른쪽 단단·왼쪽 덜 참), 겉잎 벌레 먹은 흔적 경미, 병반 없음, 점적관수 정상</span><span class="time">11:33</span></div><div class="gallery"><a class="ph" href="img/2026-11-08_cabbage-1.jpg"><img loading="lazy" src="img/2026-11-08_cabbage-1.jpg" alt=""></a><a class="ph" href="img/2026-11-08_cabbage-2.jpg"><img loading="lazy" src="img/2026-11-08_cabbage-2.jpg" alt=""></a></div></div>
 <div class="card past" data-tag="계획" data-t="2026-11-08 11-08 (일) 계획  배추·무 상태 기록 (11/8) — 사진 4장 점검(11/8 11:33). 배추: 2포기 결구 진행 — 오른쪽 단단, 왼쪽 덜 참. 군락 결구 시작~진행, 겉잎 벌레 구멍 몇 개(경미), 병반 없음, 점적관수 정상. 무: 잎 무성·진녹색, 어깨 굵기 5~7cm, 표면 매끈(갈라짐·병반 없음), 하엽 일부 노화(정상). 7~10cm까지 더 키울 여지 있으나 11/14 비 예보 → 11/13 수확(갈라짐·바람들기 예방) 유지. 배추 11/17 김장 수확 유지(손으로 눌러 단단함 확인). ※양파 재배 취소(11/8) — 11/8·11/14 양파 일정 삭제, 11/15·11 "><div class="card-head"><span class="date">11-08 (일)</span><span class="right"><span class="badge soon">D+58</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 배추·무 상태 기록 (11/8) — 사진 4장 점검(11/8 11:33). 배추: 2포기 결구 진행 — 오른쪽 단단, 왼쪽 덜 참. 군락 결구 시작~진행, 겉잎 벌레 구멍 몇 개(경미), 병반 없음, 점적관수 정상. 무: 잎 무성·진녹색, 어깨 굵기 5~7cm, 표면 매끈(갈라짐·병반 없음), 하엽 일부 노화(정상). 7~10cm까지 더 키울 여지 있으나 11/14 비 예보 → 11/13 수확(갈라짐·바람들기 예방) 유지. 배추 11/17 김장 수확 유지(손으로 눌러 단단함 확인). ※양파 재배 취소(11/8) — 11/8·11/14 양파 일정 삭제, 11/15·11</span></div></div>
 <div class="card past" data-tag="계획" data-t="2026-11-07 11-07 (토) 계획  수확시기 예측: 무 11/13(비 오기 전), 배추·김장 11/17. 11/8·11/10 아침 1°c 서리 주의(동해 기준 -3°c) "><div class="card-head"><span class="date">11-07 (토)</span><span class="right"><span class="badge soon">D+57</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 수확시기 예측: 무 11/13(비 오기 전), 배추·김장 11/17. 11/8·11/10 아침 1°C 서리 주의(동해 기준 -3°C)</span><span class="time">10:49</span></div></div>
 <div class="card past" data-tag="계획" data-t="2026-11-06 11-06 (금) 계획  마지막 방제(노균병·좀나방) + 무 비대 점검 — 수확 전 마지막 방제 — 반드시 안전사용기준(수확 전 사용금지 일수) 확인 후 살포. 일교차 큰 날 결로 → 아침 환기. 무는 어깨 굵기 확인, 물 균일하게(갈라짐 방지). "><div class="card-head"><span class="date">11-06 (금)</span><span class="right"><span class="badge soon">D+56</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 마지막 방제(노균병·좀나방) + 무 비대 점검 — 수확 전 마지막 방제 — 반드시 안전사용기준(수확 전 사용금지 일수) 확인 후 살포. 일교차 큰 날 결로 → 아침 환기. 무는 어깨 굵기 확인, 물 균일하게(갈라짐 방지).</span></div></div>
@@ -131,6 +137,7 @@
 <footer>
   <p>문의: jod2580@gmail.com · <a href="calendar.html">캘린더</a></p>
 </footer>
+<div class="lb" id="lb"><button class="x" id="lbx" aria-label="닫기">×</button><img id="lbi" alt=""></div>
 <script>
 (function(){
   var q = document.getElementById('q');
@@ -161,6 +168,20 @@
     });
   });
   apply();
+
+  // 사진: 새 창 대신 현재 페이지 위에 크게 보기
+  var lb = document.getElementById('lb');
+  var lbi = document.getElementById('lbi');
+  [].slice.call(document.querySelectorAll('.ph')).forEach(function(a){
+    a.addEventListener('click', function(ev){
+      ev.preventDefault();
+      lbi.src = a.getAttribute('href');
+      lb.classList.add('on');
+    });
+  });
+  function closeLb(){ lb.classList.remove('on'); lbi.src = ''; }
+  lb.addEventListener('click', closeLb);
+  document.addEventListener('keydown', function(ev){ if (ev.key === 'Escape') closeLb(); });
 })();
 </script>
 </body>
