@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>작물재배일지 · 2026 가을작기 — 배추·무·쪽파</title>
+<style>
+  :root { --bg:#0f1720; --card:#1b2530; --task:#f0b429; --farm:#48bb78; --fg:#e6edf3; --muted:#8b9aa8; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f4f6f8; --card:#ffffff; --fg:#1c2733; --muted:#67757f; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Roboto,sans-serif;
+    line-height:1.5; -webkit-text-size-adjust:100%; }
+  header { padding:14px 16px 6px; max-width:640px; margin:0 auto; }
+  h1 { margin:0; font-size:20px; letter-spacing:-.5px; }
+  .sub { margin:3px 0 0; color:var(--muted); font-size:12px; }
+  .menu { display:flex; gap:6px; overflow-x:auto; padding:8px 0 4px; scrollbar-width:none; }
+  .menu::-webkit-scrollbar { display:none; }
+  .menu a { flex:0 0 auto; font-size:12.5px; font-weight:600; text-decoration:none; color:var(--fg);
+    background:var(--card); padding:6px 12px; border-radius:999px; box-shadow:0 1px 2px rgba(0,0,0,.16); }
+  .menu a.on { background:var(--farm); color:#08130c; }
+  main { max-width:640px; margin:0 auto; padding:0 12px 24px; }
+  h2 { font-size:13px; color:var(--muted); font-weight:600; margin:14px 4px 6px; letter-spacing:.3px; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin:2px 0 6px; }
+  .chip { font-size:11.5px; font-weight:600; color:var(--muted); background:var(--card);
+    padding:5px 10px; border-radius:999px; }
+  .card { background:var(--card); border-radius:14px; padding:10px 12px; margin:0 0 8px;
+    box-shadow:0 1px 3px rgba(0,0,0,.18); }
+  .card.past { opacity:.55; }
+  .card-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+  .date { font-weight:700; font-size:14.5px; }
+  .right { display:flex; align-items:center; gap:6px; }
+  .crop { font-size:11.5px; color:var(--farm); font-weight:700; }
+  .badge { font-size:11px; font-weight:700; padding:2px 8px; border-radius:999px;
+    background:rgba(139,154,168,.18); color:var(--muted); }
+  .badge.today { background:var(--task); color:#1a1a1a; }
+  .badge.soon { background:rgba(72,187,120,.2); color:var(--farm); }
+  .body { display:flex; gap:8px; align-items:flex-start; }
+  .tag { flex:0 0 auto; font-size:11px; font-weight:700; padding:2px 8px; border-radius:8px; margin-top:2px; }
+  .t-ob { background:rgba(72,187,120,.16); color:var(--farm); }
+  .t-work { background:rgba(43,125,233,.18); color:#7fb3f5; }
+  .t-pest { background:rgba(229,72,77,.16); color:#f08a8d; }
+  .t-harv { background:rgba(240,180,41,.18); color:var(--task); }
+  .t-cost { background:rgba(139,154,168,.18); color:var(--muted); }
+  .t-plan { background:rgba(139,154,168,.14); color:var(--muted); }
+  .t-photo { background:rgba(139,154,168,.18); color:var(--muted); }
+  .text { font-size:13.5px; }
+  .time { margin-left:auto; font-size:11px; color:var(--muted); flex:0 0 auto; }
+  .harv { margin-top:7px; font-size:13px; font-weight:700; color:var(--task); }
+  .plan ul, .card ul { margin:0; padding-left:18px; }
+  .plan li, .card li { font-size:13px; margin:3px 0; }
+  footer { max-width:640px; margin:0 auto; padding:0 18px 30px; color:var(--muted); font-size:12px; }
+  footer a { color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🌱 작물재배일지</h1>
+  <p class="sub">2026 가을작기 — 배추·무·쪽파 &nbsp;|&nbsp; 업데이트 2026-11-10 11:30</p>
+  <nav class="menu">
+    <a href="index.html">🏠 홈</a>
+    <a href="calendar.html">📅 캘린더</a>
+    <a href="train.html">🚝 열차</a>
+    <a href="journal.html" class="on">🌱 재배일지</a>
+    <a href="privacy.html">🔒 개인정보</a>
+  </nav>
+</header>
+<main>
+  <div class="chips"><span class="chip">🌱 파종 2026-09-11 · D+60</span><span class="chip">📐 비닐하우스 ~70평 · 6고랑</span><span class="chip">🥬 배추(김장, 모종), 무(직파), 쪽파</span><span class="chip">🧺 무 11/13 · 배추 11/17(김장) · 쪽파 이듬해 3~4월</span><span class="chip">🗂 기록 27건</span></div>
+  <h2>⏳ 예정 작업</h2><div class="card plan"><ul><li><b>11-13 (금)</b> 무 수확(1차) + 저장 준비 — 굵기 찬 것부터 수확. 저장은 땅 묻이(30cm 구덩이·배수 확인) 또는 하우스 안 흙 묻이. 잎은 2~3cm 남기고 자름. 언</li><li><b>11-15 (일)</b> 쪽파 웃거름 금지 확인 — 11월부터 쪽파 웃거름 금지(웃자라면 동해 위험). 웃거름은 월동 후 2월 하순 이후. ※양파 재배는 취소됨(2026-11-08).</li><li><b>11-17 (화)</b> 배추 수확 시작 + 김장 — 단단한 포기부터 수확. 대구 김장 적기(11월 중~하순). 결구 덜 된 포기는 하우스에 세워두면 더 참. 수확 후 잔여 잎·뿌리 정리</li><li><b>11-20 (금)</b> 김장 마무리 + 저장 점검 — 배추 김장 완료. 무 묻이 저장 상태 확인(물 고임 없게). 배추 저장은 뿌리 살아있게 하우스 세워두기.</li><li><b>11-25 (수)</b> 쪽파 부직포 피복(월동) + 텃밭 정리 — 쪽파 위 부직포/짚 피복 → 월동(3~4월 수확). 수확 끝난 고랑 정리·잔재 제거, 하우스 환기(낮)/보온(밤). ※</li><li><b>11-28 (토)</b> 저장물 상태 점검 — 무 묻이: 배수·온도 확인, 썩은 것 제거. 배추: 겉잎 마름·무름병 확인. 하우스 환기(낮) / 보온(밤).</li></ul></div>
+  
+  <h2>📔 일지</h2>
+  <div class="card"><div class="card-head"><span class="date">11-10 (화)</span><span class="right"><span class="crop">무</span><span class="badge soon">D+60</span></span></div><div class="body"><span class="tag t-work">작업</span><span class="text">무 시식 캐보기 + 배추 단수 시작. 어깨 6~8cm면 수확기 판단, 배추는 수확 7~10일 전 단수(저장성·김장 맛)</span><span class="time">10:49</span></div></div>
+<div class="card"><div class="card-head"><span class="date">11-10 (화)</span><span class="right"><span class="badge soon">D+60</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☑ 무 시식 캐보기 + 배추 단수 시작 — 무 1~2포기 캐서 어깨 6~8cm면 수확기 판단. 배추는 수확 7~10일 전 단수 시작(저장성·김장 맛). 첫 서리 예보 확인 — 무는 서리 전에 우선 수확.</span></div></div>
+<div class="card"><div class="card-head"><span class="date">11-08 (일)</span><span class="right"><span class="crop">배추</span><span class="badge soon">D+58</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">사진 5장 점검 — 배추 2포기 결구 진행(오른쪽 단단·왼쪽 덜 참), 겉잎 벌레 구멍 경미, 병반 없음, 점적 정상. 무 잎 무성·어깨 5~7cm·표면 매끈(갈라짐 없음), 하엽 일부 노화(정상)</span><span class="time">10:49</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">11-08 (일)</span><span class="right"><span class="badge soon">D+58</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 배추·무 상태 기록 (11/8) — 사진 4장 점검(11/8 11:33). 배추: 2포기 결구 진행 — 오른쪽 단단, 왼쪽 덜 참. 군락 결구 시작~진행, 겉잎 벌레 구멍 몇 개(경미), 병반 없음, 점적관수 정상. 무: 잎 무성·진녹색, 어깨 굵기 5~7cm, 표면 매끈(갈라짐·병반 없음), 하엽 일부 노화(정상). 7~10cm까지 더 키울 여지 있으나 11/14 비 예보 → 11/13 수확(갈라짐·바람들기 예방) 유지. 배추 11/17 김장 수확 유지(손으로 눌러 단단함 확인). ※양파 재배 취소(11/8) — 11/8·11/14 양파 일정 삭제, 11/15·11</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">11-07 (토)</span><span class="right"><span class="badge soon">D+57</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 수확시기 예측: 무 11/13(비 오기 전), 배추·김장 11/17. 11/8·11/10 아침 1°C 서리 주의(동해 기준 -3°C)</span><span class="time">10:49</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">11-06 (금)</span><span class="right"><span class="badge soon">D+56</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 마지막 방제(노균병·좀나방) + 무 비대 점검 — 수확 전 마지막 방제 — 반드시 안전사용기준(수확 전 사용금지 일수) 확인 후 살포. 일교차 큰 날 결로 → 아침 환기. 무는 어깨 굵기 확인, 물 균일하게(갈라짐 방지).</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">11-04 (수)</span><span class="right"><span class="badge soon">D+54</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 배추 결구 단단함 점검 + 관수 — 정식 9/11 → 54일차. 손으로 눌러 충실도 80~90% 확인. 아직 물렁하면 7~10일 더. 3~5일 간격 오전 관수, 잎에 물 안 닿게. 질소 금지(무름병) — 잎색 진녹색이면 황산가리만. 건습 반복 시 석회결핍(속썩음) 주의.</span></div></div>
+<div class="card"><div class="card-head"><span class="date">11-02 (월)</span><span class="right"><span class="badge soon">D+52</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">결구 중기~후기. 수확 적기 11/15~25 판단(정식 후 65~75일). 무 어깨 6~8cm, 서리 전 수확 필요</span><span class="time">10:49</span></div></div>
+<div class="card"><div class="card-head"><span class="date">10-28 (수)</span><span class="right"><span class="badge soon">D+47</span></span></div><div class="body"><span class="tag t-work">작업</span><span class="text">무 NK비료 문의 → 질소 과다 주의. 잎 진녹색·무성이면 NK 대신 황산가리 단독. 수확 3주 전(11월 초)이 질소 마지노선</span><span class="time">10:49</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">10-24 (토)</span><span class="right"><span class="badge soon">D+43</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 무 2차 웃거름 + 배추 결구 관리 — 무: 파종 40일경 NK복합비료. 배추: 물·칼리 유지, 결구 진행 점검.</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">10-15 (목)</span><span class="right"><span class="badge soon">D+34</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 쪽파 1차 웃거름 — 쪽파 심은 지 30~40일: 요소 조금 주고 관수. (잎 20~30cm·쓰러지면 웃거름 중단)</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">10-12 (월)</span><span class="right"><span class="badge soon">D+31</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 무 비대기 균일 관수 + 담배나방 방제 — 무: 물 일정하게(들쭉날쭉하면 갈라짐). 담배나방: 에마멕틴·클로란트라닐리프롤. 잡초 제거·배토.</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">10-09 (금)</span><span class="right"><span class="badge soon">D+28</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 배추 결구기 물 관리 + 노균병 예방 — 결구 시작 — 물 부족하면 속 안 참. 겉흙 마르면 듬뿍 관수. 노균병 예방: 아족시스트로빈(아미스타)·만코제브. 배수 관리.</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">10-05 (월)</span><span class="right"><span class="badge soon">D+24</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 좀나방·진딧물 교대 방제 — 배추좀나방·진딧물 각각 다른 작용기작 약으로 교대 살포. 잎 뒷면 집중.</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">10-02 (금)</span><span class="right"><span class="badge soon">D+21</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 무 2차 솎음(큰것,작은것,잎색다른거,병,못생긴것)+ 배추·무 1차 웃거름(nk비료+칼슘) — 무: 본잎 4~5매 → 최종 간격 20~25cm. 배추(정식 20~25일): 요소/NK를 포기 10~15cm 옆에 묻고 관수. 무: 칼리(NK) 위주, 질소 적게(과다 시 갈라짐·추대).</span></div></div>
+<div class="card"><div class="card-head"><span class="date">10-01 (목)</span><span class="right"><span class="badge soon">D+20</span></span></div><div class="body"><span class="tag t-ob">관찰</span><span class="text">관수 상담: 배추 목표 토양수분 65~70%(3~5일 간격 점적, 오전), 무 55~65%. 표면 아닌 10cm 깊이로 판단. 잎에 물 닿지 않게(노균병·무름병)</span><span class="time">10:49</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">09-28 (월)</span><span class="right"><span class="badge soon">D+17</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 벼룩잎벌레 2차 방제 + 생육 점검 — 1차와 다른 계통 약으로 교대. 배추·무 생육 상태, 벌레 구멍 확인.</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">09-25 (금)</span><span class="right"><span class="badge soon">D+14</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 배추좀나방 방제 시작 — BT제(센토·투루파)·에마멕틴벤조에이트(엑설트)·클로란트라닐리프롤(알타코아). 7~10일 간격, 작용기작 교대. 안전사용기준(수확 전 금지일) 준수.</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">09-20 (일)</span><span class="right"><span class="badge soon">D+9</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 벼룩잎벌레 초기 방제 — 친환경: 고삼추출물+님오일 / 화학: 비펜트린(타르가)·이미다클로프리드(코니도). 잎 뒷면까지, 아침·저녁 살포. 배추·무.</span></div></div>
+<div class="card past"><div class="card-head"><span class="date">09-19 (토)</span><span class="right"><span class="badge soon">D+8</span></span></div><div class="body"><span class="tag t-plan">계획</span><span class="text">☐ 무 1차 솎음 + 배추 활착 점검 — 무(직파) 파종 7~10일차: 3~5cm 간격으로 솎음(뽑지 말고 가위로 줄기만). 배추(모종) 활착 확인·죽은 포기 보식. 쪽파 잡초 제거. 겉흙 2cm 마르면 관수.</span></div></div>
+<div class="card"><div class="card-head"><span class="date">09-11 (금)</span><span class="right"><span class="badge today">오늘 · D+0</span></span></div><div class="body"><span class="tag t-work">작업</span><span class="text">배추(모종)·무(직파)·쪽파 파종·정식. 6고랑 중 3번=배추, 4·5번=쪽파·시금치, 2번=양파(후에 취소), 1·6번 마늘 예정</span><span class="time">10:49</span></div></div>
+</main>
+<footer>
+  <p>문의: jod2580@gmail.com · <a href="calendar.html">캘린더</a></p>
+</footer>
+</body>
+</html>
