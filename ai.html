@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 학습 · 역무지원</title>
+<style>
+  :root { --bg:#0f1720; --card:#1b2530; --ai:#7c9cf5; --task:#f0b429; --farm:#48bb78; --fg:#e6edf3; --muted:#8b9aa8; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f4f6f8; --card:#ffffff; --fg:#1c2733; --muted:#67757f; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Roboto,sans-serif;
+    line-height:1.5; -webkit-text-size-adjust:100%; }
+  header { padding:14px 16px 6px; max-width:640px; margin:0 auto; }
+  h1 { margin:0; font-size:20px; letter-spacing:-.5px; }
+  .sub { margin:3px 0 0; color:var(--muted); font-size:12px; }
+  .menu { display:flex; gap:6px; overflow-x:auto; padding:8px 0 4px; scrollbar-width:none; }
+  .menu::-webkit-scrollbar { display:none; }
+  .menu a { flex:0 0 auto; font-size:12.5px; font-weight:600; text-decoration:none; color:var(--fg);
+    background:var(--card); padding:6px 12px; border-radius:999px; box-shadow:0 1px 2px rgba(0,0,0,.16); }
+  .menu a.on { background:var(--ai); color:#0b1420; }
+  main { max-width:640px; margin:0 auto; padding:0 12px 24px; }
+  h2 { font-size:13px; color:var(--muted); font-weight:600; margin:14px 4px 6px; letter-spacing:.3px; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 4px; }
+  .chip { font-size:11.5px; color:var(--muted); background:var(--bg); border:1px solid rgba(139,154,168,.3);
+    padding:4px 9px; border-radius:999px; }
+  .chip b { color:var(--fg); }
+  .card { background:var(--card); border-radius:14px; padding:11px 13px; margin:0 0 8px;
+    box-shadow:0 1px 3px rgba(0,0,0,.18); }
+  .card.dim { opacity:.62; }
+  .head { display:flex; align-items:center; gap:8px; }
+  .num { font-size:11px; font-weight:800; color:var(--ai); background:rgba(124,156,245,.14);
+    padding:2px 6px; border-radius:7px; }
+  .t { font-size:14.5px; font-weight:700; flex:1; }
+  .badge { font-size:11px; font-weight:800; padding:3px 9px; border-radius:999px; }
+  .when { font-size:11.5px; color:var(--muted); margin:3px 0 5px; }
+  .sum { font-size:13.5px; }
+  ul { margin:7px 0 2px; padding-left:17px; }
+  li { font-size:13px; margin-bottom:2px; }
+  .more { margin-top:7px; }
+  .more summary { font-size:12.5px; font-weight:700; color:var(--ai); cursor:pointer; }
+  pre { font-family:"Noto Sans Mono CJK KR",ui-monospace,monospace; font-size:11.5px;
+    background:var(--bg); border:1px solid rgba(139,154,168,.25); border-radius:9px;
+    padding:9px 10px; margin:7px 0 0; white-space:pre-wrap; word-break:break-all; line-height:1.45; }
+  .note { font-size:12px; color:var(--muted); margin:2px 4px 0; }
+  footer { max-width:640px; margin:0 auto; padding:6px 18px 30px; color:var(--muted); font-size:12px; }
+  footer a { color:var(--muted); }
+</style>
+</head>
+<body>
+<header>
+  <h1>🤖 AI 학습 (역무지원 12항목)</h1>
+  <p class="sub">1일 1항목 순환 학습 · 업데이트 2026-11-12 13:21</p>
+  <nav class="menu">
+    <a href="index.html">🏠 홈</a>
+    <a href="calendar.html">📅 캘린더</a>
+    <a href="train.html">🚝 열차</a>
+    <a href="journal.html">🌱 재배일지</a>
+    <a href="ai.html" class="on">🤖 AI학습</a>
+    <a href="privacy.html">🔒 개인정보</a>
+  </nav>
+</header>
+<main>
+  <div class="chips">
+    <span class="chip"><b>완료 2</b></span>
+    <span class="chip"><b>부분 2</b></span>
+    <span class="chip"><b>예정 8</b></span>
+  </div>
+  <h2>✅ 완료 항목</h2>
+  <div class="card">
+  <div class="head"><span class="num">01</span><span class="t">동향보고 초안 자동생성</span>
+    <span class="badge" style="background:#48bb7822;color:#48bb78">완료</span></div>
+  <div class="when">2026-11-09</div>
+  <div class="sum">과거 동향보고 3건을 예시(few-shot)로 넣어 200~400자 초안 생성. 사람은 확인·보완만.</div>
+  <ul><li>학습자료: 지산 유모차끼임 · 범물 쌍방폭행 · 수성못 E/S 넘어짐</li><li>출력 항목: 제목 / 개요(일시·장소·유형·원인코드) / 주요내용 / 조치사항(시간순) / 기타</li><li>효과: 20~30분 → 5분 목표 (확인·코드확정만 남음)</li><li>사람 검토 항목: 미확인 칸, 부상정도, 원인코드 확정</li></ul><details class="more"><summary>초안 출력 예시 보기</summary><pre>제목  수성못역 E/S #5 넘어짐 사고
+개요  2026.10.28.(수) 09:30 / 3호선&gt;수성못&gt;에스컬레이터&gt;#5&gt;초입
+      유형=넘어짐 / 원인=본인부주의&gt;중심잃음 / 신고 119 / CCTV [V]
+주요내용  사고자가 E/S #5 도입부에서 몸을 우측면에 기대어 승차하던 중
+      중심을 잃고 뒤로 넘어짐
+조치  09:31 직원 목격 → 비상정지 / 09:33 119·승강 통보
+      09:46 수성119 도착 응급처치 → 이송 불요(귀가)
+      09:49 E/S 이상 없음 확인 후 재가동
+기타  오른손 등 찰과상 / 남·65세 이상·무직</pre></details>
+</div><div class="card">
+  <div class="head"><span class="num">02</span><span class="t">매뉴얼·법령 RAG 검색</span>
+    <span class="badge" style="background:#48bb7822;color:#48bb78">완료</span></div>
+  <div class="when">2026-11-11</div>
+  <div class="sum">법령 21건·편람·매뉴얼·동향보고를 800자/오버랩 100으로 청킹해 색인. 근거 조문까지 즉시 검색.</div>
+  <ul><li>청킹: 800자 목표 + 직전 카드 100자 겹침(문장 경계 보존)</li><li>법령은 조문 중간을 자르지 않아 평균 1,523자</li><li>색인: BM25 역색인 + 한글 2글자 조합(형태소 분석기 불필요)</li><li>검색: 관련 카드 3~5장 0.05초 추출, 출처(문서·조문) 표시</li></ul><details class="more"><summary>색인 통계 보기</summary><div class="chips"><span class="chip"><b>전체</b> 5,102청크</span><span class="chip"><b>법령</b> 3,648</span><span class="chip"><b>매뉴얼</b> 1,443</span><span class="chip"><b>동향보고</b> 11</span><span class="chip"><b>어휘</b> 74,805</span><span class="chip"><b>평균</b> 1,523자</span><span class="chip"><b>생성</b> 13초</span></div></details>
+</div>
+  <h2>🔧 부분 운영</h2>
+  <div class="card">
+  <div class="head"><span class="num">03</span><span class="t">훈련 출제·채점 자동화</span>
+    <span class="badge" style="background:#f0b42922;color:#f0b429">부분</span></div>
+  <div class="when">운영 중</div>
+  <div class="sum">A/B조 6일주기 자동 출제(cron 4개), 회차·정답률 이력 누적. 채점은 검토 병행.</div>
+  <ul><li>누적 41회차 발송, 채점 이력 memory/quiz에 축적</li></ul>
+</div><div class="card">
+  <div class="head"><span class="num">09</span><span class="t">근무·알람 자동화</span>
+    <span class="badge" style="background:#f0b42922;color:#f0b429">부분</span></div>
+  <div class="when">운영 중</div>
+  <div class="sum">6일주기 A/A/B/B/비/휴 상수화 + 알람 자동화</div>
+  
+</div>
+  <h2>📋 예정 항목</h2>
+  <div class="card dim">
+  <div class="head"><span class="num">04</span><span class="t">혼잡도 AI 분석</span>
+    <span class="badge" style="background:#8b9aa822;color:#8b9aa8">예정</span></div>
+  <div class="when">2단계</div>
+  <div class="sum">승강장·대합실 인원 계수 → 혼잡지수·임계치 알림</div>
+  
+</div><div class="card dim">
+  <div class="head"><span class="num">05</span><span class="t">선로·난간 침입 감지</span>
+    <span class="badge" style="background:#8b9aa822;color:#8b9aa8">예정</span></div>
+  <div class="when">3단계</div>
+  <div class="sum">승강장 끝단·비상문·선로 인접 침입 감지(3호선은 관제·관리역 경유 통보)</div>
+  
+</div><div class="card dim">
+  <div class="head"><span class="num">06</span><span class="t">쓰러짐 감지</span>
+    <span class="badge" style="background:#8b9aa822;color:#8b9aa8">예정</span></div>
+  <div class="when">2단계</div>
+  <div class="sum">쓰러진 자세 지속 시 경보 → 출동·119·AED 안내</div>
+  
+</div><div class="card dim">
+  <div class="head"><span class="num">07</span><span class="t">설비 고장 예측</span>
+    <span class="badge" style="background:#8b9aa822;color:#8b9aa8">예정</span></div>
+  <div class="when">협의 후</div>
+  <div class="sum">E/S·PSD·냉난방 추세 분석 → 기계분소 사전 통보</div>
+  
+</div><div class="card dim">
+  <div class="head"><span class="num">08</span><span class="t">민원 응대 스크립트</span>
+    <span class="badge" style="background:#8b9aa822;color:#8b9aa8">예정</span></div>
+  <div class="when">예정</div>
+  <div class="sum">악성민원 4단계 문구 템플릿 고정</div>
+  
+</div><div class="card dim">
+  <div class="head"><span class="num">10</span><span class="t">관리역 대시보드</span>
+    <span class="badge" style="background:#8b9aa822;color:#8b9aa8">예정</span></div>
+  <div class="when">예정</div>
+  <div class="sum">지연·민원·훈련 정답률 3개 위젯</div>
+  
+</div><div class="card dim">
+  <div class="head"><span class="num">11</span><span class="t">보안·개인정보</span>
+    <span class="badge" style="background:#8b9aa822;color:#8b9aa8">예정</span></div>
+  <div class="when">예정</div>
+  <div class="sum">비식별 분석·원본 보관기간 정책 문서화</div>
+  
+</div><div class="card dim">
+  <div class="head"><span class="num">12</span><span class="t">시범운영·보고</span>
+    <span class="badge" style="background:#8b9aa822;color:#8b9aa8">예정</span></div>
+  <div class="when">예정</div>
+  <div class="sum">4주 KPI 측정표(보고 수정률 30%↓, 응답 10초↓)</div>
+  
+</div>
+  <h2>📄 관련 문서</h2>
+  <div class="card">
+    <div class="sum">AI 학습 추진 보고서 (2026-11-12, A4)</div>
+    <ul>
+      <li><a href="docs/AI학습_추진보고_2026-11-12.pdf">보고서 PDF 열기</a></li>
+      <li>근거: AI 역무지원팀 구축 기획안 v2 (2026-11-08)</li>
+    </ul>
+    <div class="note">원칙 — AI는 판단 보조. 최종 판단·조치·서명은 담당자. 근거 없는 내용은 단정하지 않음.</div>
+  </div>
+</main>
+<footer>
+  <p><a href="index.html">홈</a> · <a href="calendar.html">캘린더</a> · <a href="journal.html">재배일지</a> · <a href="privacy.html">개인정보처리방침</a></p>
+</footer>
+</body>
+</html>
