@@ -40,6 +40,10 @@
   ul { margin:7px 0 2px; padding-left:17px; }
   li { font-size:13px; margin-bottom:2px; }
   .more { margin-top:7px; }
+  .go { margin-top:8px; }
+  .go a { display:inline-block; font-size:13px; font-weight:800; text-decoration:none;
+    background:var(--ai); color:#0b1420; padding:9px 13px; border-radius:11px; }
+  .go a:active { opacity:.75; }
   .more summary { font-size:12.5px; font-weight:700; color:var(--ai); cursor:pointer; }
   pre { font-family:"Noto Sans Mono CJK KR",ui-monospace,monospace; font-size:11.5px;
     background:var(--bg); border:1px solid rgba(139,154,168,.25); border-radius:9px;
@@ -52,7 +56,7 @@
 <body>
 <header>
   <h1>🤖 AI 학습 (역무지원 12항목)</h1>
-  <p class="sub">1일 1항목 순환 학습 · 업데이트 2026-11-12 13:21</p>
+  <p class="sub">1일 1항목 순환 학습 · 업데이트 2026-11-12 13:34</p>
   <nav class="menu">
     <a href="index.html">🏠 홈</a>
     <a href="calendar.html">📅 캘린더</a>
@@ -74,7 +78,7 @@
     <span class="badge" style="background:#48bb7822;color:#48bb78">완료</span></div>
   <div class="when">2026-11-09</div>
   <div class="sum">과거 동향보고 3건을 예시(few-shot)로 넣어 200~400자 초안 생성. 사람은 확인·보완만.</div>
-  <ul><li>학습자료: 지산 유모차끼임 · 범물 쌍방폭행 · 수성못 E/S 넘어짐</li><li>출력 항목: 제목 / 개요(일시·장소·유형·원인코드) / 주요내용 / 조치사항(시간순) / 기타</li><li>효과: 20~30분 → 5분 목표 (확인·코드확정만 남음)</li><li>사람 검토 항목: 미확인 칸, 부상정도, 원인코드 확정</li></ul><details class="more"><summary>초안 출력 예시 보기</summary><pre>제목  수성못역 E/S #5 넘어짐 사고
+  <ul><li>학습자료: 지산 유모차끼임 · 범물 쌍방폭행 · 수성못 E/S 넘어짐</li><li>출력 항목: 제목 / 개요(일시·장소·유형·원인코드) / 주요내용 / 조치사항(시간순) / 기타</li><li>효과: 20~30분 → 5분 목표 (확인·코드확정만 남음)</li><li>사람 검토 항목: 미확인 칸, 부상정도, 원인코드 확정</li></ul><div class="go"><a href="ai_report.html">✍ 동향보고 초안 폼 열기</a></div><details class="more"><summary>초안 출력 예시 보기</summary><pre>제목  수성못역 E/S #5 넘어짐 사고
 개요  2026.10.28.(수) 09:30 / 3호선&gt;수성못&gt;에스컬레이터&gt;#5&gt;초입
       유형=넘어짐 / 원인=본인부주의&gt;중심잃음 / 신고 119 / CCTV [V]
 주요내용  사고자가 E/S #5 도입부에서 몸을 우측면에 기대어 승차하던 중
@@ -88,7 +92,7 @@
     <span class="badge" style="background:#48bb7822;color:#48bb78">완료</span></div>
   <div class="when">2026-11-11</div>
   <div class="sum">법령 21건·편람·매뉴얼·동향보고를 800자/오버랩 100으로 청킹해 색인. 근거 조문까지 즉시 검색.</div>
-  <ul><li>청킹: 800자 목표 + 직전 카드 100자 겹침(문장 경계 보존)</li><li>법령은 조문 중간을 자르지 않아 평균 1,523자</li><li>색인: BM25 역색인 + 한글 2글자 조합(형태소 분석기 불필요)</li><li>검색: 관련 카드 3~5장 0.05초 추출, 출처(문서·조문) 표시</li></ul><details class="more"><summary>색인 통계 보기</summary><div class="chips"><span class="chip"><b>전체</b> 5,102청크</span><span class="chip"><b>법령</b> 3,648</span><span class="chip"><b>매뉴얼</b> 1,443</span><span class="chip"><b>동향보고</b> 11</span><span class="chip"><b>어휘</b> 74,805</span><span class="chip"><b>평균</b> 1,523자</span><span class="chip"><b>생성</b> 13초</span></div></details>
+  <ul><li>청킹: 800자 목표 + 직전 카드 100자 겹침(문장 경계 보존)</li><li>법령은 조문 중간을 자르지 않아 평균 1,523자</li><li>색인: BM25 역색인 + 한글 2글자 조합(형태소 분석기 불필요)</li><li>검색: 관련 카드 3~5장 0.05초 추출, 출처(문서·조문) 표시</li></ul><div class="go"><a href="ai_search.html">🔍 매뉴얼·법령 검색 열기</a></div><details class="more"><summary>색인 통계 보기</summary><div class="chips"><span class="chip"><b>전체</b> 5,102청크</span><span class="chip"><b>법령</b> 3,648</span><span class="chip"><b>매뉴얼</b> 1,443</span><span class="chip"><b>동향보고</b> 11</span><span class="chip"><b>어휘</b> 74,805</span><span class="chip"><b>평균</b> 1,523자</span><span class="chip"><b>생성</b> 13초</span></div></details>
 </div>
   <h2>🔧 부분 운영</h2>
   <div class="card">
