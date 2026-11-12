@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>동향보고 초안 생성 (AI 학습 ①)</title>
+<style>
+  :root { --bg:#0f1720; --card:#1b2530; --ai:#7c9cf5; --farm:#48bb78; --task:#f0b429; --fg:#e6edf3; --muted:#8b9aa8; --line:rgba(139,154,168,.35); }
+  @media (prefers-color-scheme: light) { :root { --bg:#f4f6f8; --card:#ffffff; --fg:#1c2733; --muted:#67757f; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Roboto,sans-serif;
+    line-height:1.5; -webkit-text-size-adjust:100%; }
+  header { padding:14px 16px 6px; max-width:640px; margin:0 auto; }
+  h1 { margin:0; font-size:19px; letter-spacing:-.5px; }
+  .sub { margin:3px 0 0; color:var(--muted); font-size:12px; }
+  .menu { display:flex; gap:6px; overflow-x:auto; padding:8px 0 4px; scrollbar-width:none; }
+  .menu::-webkit-scrollbar { display:none; }
+  .menu a { flex:0 0 auto; font-size:12.5px; font-weight:600; text-decoration:none; color:var(--fg);
+    background:var(--card); padding:6px 12px; border-radius:999px; box-shadow:0 1px 2px rgba(0,0,0,.16); }
+  .menu a.on { background:var(--ai); color:#0b1420; }
+  main { max-width:640px; margin:0 auto; padding:0 12px 40px; }
+  .box { background:var(--card); border-radius:14px; padding:11px 13px; margin:0 0 8px; box-shadow:0 1px 3px rgba(0,0,0,.18); }
+  h2 { font-size:12.5px; color:var(--muted); font-weight:700; margin:0 2px 8px; letter-spacing:.3px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+  .grid .full { grid-column:1 / -1; }
+  label.f { display:block; font-size:11.5px; color:var(--muted); margin:0 0 3px 2px; }
+  input, select, textarea { width:100%; font-size:14px; padding:9px 10px; border-radius:10px;
+    border:1px solid var(--line); background:var(--bg); color:var(--fg); font-family:inherit; }
+  textarea { min-height:64px; resize:vertical; }
+  .chk { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--fg); }
+  .chk input { width:auto; }
+  .timeline .row { display:grid; grid-template-columns:78px 1fr 34px; gap:6px; margin-bottom:6px; }
+  .timeline .del { background:transparent; border:1px solid var(--line); color:var(--muted); border-radius:10px; font-size:15px; padding:0; }
+  button { font-size:13.5px; font-weight:700; padding:10px 14px; border-radius:11px; border:0;
+    background:var(--ai); color:#0b1420; cursor:pointer; font-family:inherit; }
+  button.ghost { background:transparent; color:var(--fg); border:1px solid var(--line); }
+  button:active { opacity:.75; }
+  .bar { display:flex; gap:7px; flex-wrap:wrap; margin:2px 0 8px; }
+  pre { font-family:"Noto Sans Mono CJK KR",ui-monospace,monospace; font-size:12px; line-height:1.5;
+    background:var(--card); border-radius:12px; padding:12px; margin:0; white-space:pre-wrap; word-break:break-word;
+    box-shadow:0 1px 3px rgba(0,0,0,.18); }
+  .note { font-size:11.5px; color:var(--muted); margin:8px 2px 0; }
+  .note b { color:var(--fg); }
+  @media print { header, nav, .menu, .box, .bar, .note, footer { display:none !important; }
+    body { background:#fff; color:#000; } pre { box-shadow:none; font-size:11pt; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>📝 동향보고 초안 생성</h1>
+  <p class="sub">AI 학습 ① · 항목만 채우면 형식에 맞춰 초안을 만들어 줍니다</p>
+  <nav class="menu">
+    <a href="index.html">🏠 홈</a>
+    <a href="calendar.html">📅 캘린더</a>
+    <a href="train.html">🚝 열차</a>
+    <a href="journal.html">🌱 재배일지</a>
+    <a href="ai.html" class="on">🤖 AI학습</a>
+    <a href="privacy.html">🔒 개인정보</a>
+  </nav>
+</header>
+<main>
+  <div class="box">
+    <h2>1) 기본 정보</h2>
+    <div class="grid">
+      <div class="full"><label class="f">일시</label><input id="when" type="datetime-local"></div>
+      <div><label class="f">날씨</label>
+        <select id="wx"><option>맑음</option><option>흐림</option><option>비</option><option>눈</option><option>미확인</option></select></div>
+      <div><label class="f">역</label>
+        <select id="stn"><option>범물</option><option>수성못</option><option>지산</option><option>황금</option><option>어린이세상</option><option>용지</option></select></div>
+      <div class="full"><label class="f">장소 (깊이순: 설비 &gt; 상세 &gt; 세부)</label>
+        <input id="place" placeholder="예: 에스컬레이터 &gt; 에스컬레이터#5 &gt; 초입"></div>
+      <div><label class="f">사고유형</label>
+        <input id="type" list="types" placeholder="끼임 / 넘어짐 / 승객난동…">
+        <datalist id="types"><option>끼임</option><option>넘어짐</option><option>승객난동</option><option>추락</option><option>부정승차</option><option>설비고장</option></datalist></div>
+      <div><label class="f">사고원인(대분류)</label>
+        <input id="cause1" list="causes" placeholder="본인부주의 / 시설물 기인…">
+        <datalist id="causes"><option>본인부주의</option><option>시설물 기인</option><option>제3자기인</option><option>운전취급</option><option>미확인</option></datalist></div>
+      <div><label class="f">사고원인(세부)</label><input id="cause2" placeholder="예: 중심잃음"></div>
+      <div><label class="f">사고자</label>
+        <select id="who"><option>여객</option><option>종사자</option><option>기타</option></select></div>
+    </div>
+  </div>
+
+  <div class="box">
+    <h2>2) 대응 정보</h2>
+    <div class="grid">
+      <div><label class="f">긴급신고</label>
+        <select id="emg"><option>없음</option><option>119</option><option>112</option><option>112·119</option></select></div>
+      <div><label class="f">출동소속(명)</label><input id="unit" placeholder="예: 수성119안전센터"></div>
+      <div><label class="f">출동근거</label>
+        <select id="basis"><option>직원신고</option><option>고객신고</option><option>초동대처</option></select></div>
+      <div><label class="f">최종목적지</label><input id="dest" placeholder="귀가(집) / 병원"></div>
+      <div><label class="f">동반인</label>
+        <select id="with"><option>없음</option><option>가족</option><option>지인</option><option>미확인</option></select></div>
+      <div><label class="f">음주상태</label>
+        <select id="drink"><option>[ ]</option><option>[ V ]</option><option>미확인</option></select></div>
+      <div class="full"><label class="chk"><input id="cctv" type="checkbox" checked> CCTV 영상 확보</label></div>
+      <div class="full"><label class="f">주요내용 (팩트만 1~2문장)</label>
+        <textarea id="body" placeholder="상기 일시에 사고자가 E/S #5 도입부에서 몸을 우측면에 기대어 승차하던 중 중심을 잃고 뒤로 넘어짐"></textarea></div>
+    </div>
+  </div>
+
+  <div class="box timeline">
+    <h2>3) 조치사항 (시간순)</h2>
+    <div id="rows"></div>
+    <div class="bar"><button class="ghost" id="add">+ 시간 추가</button></div>
+  </div>
+
+  <div class="box">
+    <h2>4) 기타</h2>
+    <div class="grid">
+      <div class="full"><label class="f">부상 정도</label><input id="inj" placeholder="예: 오른손 등 찰과상 / 없음"></div>
+      <div><label class="f">성명(마스킹)</label><input id="pname" placeholder="신○○"></div>
+      <div><label class="f">전화번호</label><input id="ptel" placeholder="미고지"></div>
+      <div><label class="f">성별</label><select id="psex"><option>미확인</option><option>남</option><option>여</option></select></div>
+      <div><label class="f">연령대</label><input id="page" placeholder="65세 이상"></div>
+      <div><label class="f">부상부위</label><input id="ppart" placeholder="오른팔"></div>
+      <div><label class="f">부상종류</label><input id="pkind" placeholder="찰과상"></div>
+      <div class="full"><label class="f">민원인 문의사항 (있으면)</label><input id="ask" placeholder="없음"></div>
+    </div>
+  </div>
+
+  <div class="bar">
+    <button id="gen">초안 생성</button>
+    <button class="ghost" id="copy">복사</button>
+    <button class="ghost" id="print">인쇄</button>
+  </div>
+
+  <pre id="out">위 항목을 채우고 [초안 생성]을 누르면 여기에 표시됩니다.</pre>
+  <p class="note"><b>주의</b> — 이 폼은 서식 자동 정리도구입니다. 문장 다듬기·원인코드 확정·개인정보 마스킹 최종 확인은 담당자 몫.<br>
+  실제 AI 초안(과거 보고 3건 참조)이 필요하면 텔레그램 두리에게 “동향보고 초안”과 사고 메모를 보내면 됩니다.</p>
+</main>
+<footer><p><a href="ai.html">AI 학습으로</a></p></footer>
+<script>
+function $(id){ return document.getElementById(id); }
+function pad(n){ return String(n).padStart(2,"0"); }
+
+function addRow(t, txt){
+  const div = document.createElement("div");
+  div.className = "row";
+  div.innerHTML = `<input class="t" placeholder="09:31" value="${t||""}">
+    <input class="c" placeholder="조치 내용" value="${txt||""}">
+    <button class="del" type="button">×</button>`;
+  div.querySelector(".del").onclick = () => div.remove();
+  $("rows").appendChild(div);
+}
+$("add").onclick = () => addRow("", "");
+
+function fmtWhen(v){
+  if (!v) return "미기재";
+  const [d, t] = v.split("T");
+  const [y, m, dd] = d.split("-");
+  const wd = ["일","월","화","수","목","금","토"][new Date(d + "T00:00:00").getDay()];
+  return `${y}.${m}.${dd}.(${wd}) ${t}`;
+}
+
+$("gen").onclick = () => {
+  const w = fmtWhen($("when").value);
+  const stn = $("stn").value;
+  const place = ($("place").value || "").trim();
+  const type = ($("type").value || "").trim() || "미기재";
+  const c1 = ($("cause1").value || "").trim() || "미확인";
+  const c2 = ($("cause2").value || "").trim();
+  const rows = [...document.querySelectorAll("#rows .row")].map(r => {
+    const t = r.querySelector(".t").value.trim();
+    const c = r.querySelector(".c").value.trim();
+    return c ? `- **${t || "--:--"}** ${c}` : null;
+  }).filter(Boolean);
+
+  const L = [];
+  L.push(`# 동향보고 초안 — ${stn}역 ${type} 사고`);
+  L.push("");
+  L.push(`- **보고일**: ${w.slice(0,10)}`);
+  L.push(`- **보고자**: 수성못관리역장(대) ○○○`);
+  L.push("");
+  L.push("## 제목");
+  L.push(`${stn}역 ${place ? place.split(">")[0].trim() + " " : ""}${type} 사고`);
+  L.push("");
+  L.push("## 개요");
+  L.push(`| 항목 | 내용 |`);
+  L.push(`| --- | --- |`);
+  L.push(`| 일시 | ${w} (${$("wx").value}) |`);
+  L.push(`| 장소 | 3호선 > ${stn} > ${place || "미기재"} |`);
+  L.push(`| 사고유형 | ${type} |`);
+  L.push(`| 사고원인 | ${c1}${c2 ? " > " + c2 : ""} |`);
+  L.push(`| 음주상태 | ${$("drink").value} |`);
+  L.push(`| 사고자 | ${$("who").value} |`);
+  L.push(`| 긴급신고 | ${$("emg").value} |`);
+  L.push(`| 출동소속(명) | ${$("unit").value || "해당없음"} |`);
+  L.push(`| 최종목적지 | ${$("dest").value || "미기재"} |`);
+  L.push(`| 동반인 | ${$("with").value} |`);
+  L.push(`| 출동근거 | ${$("basis").value} |`);
+  L.push(`| CCTV 영상 확보 | ${$("cctv").checked ? "[ V ]" : "[ ]"} |`);
+  L.push(`| 승차권반환 | ( )건 ( )원 |`);
+  L.push("");
+  L.push("## 주요내용");
+  L.push(($("body").value || "상기 일시와 장소에서 " + type + " 발생").trim());
+  L.push("");
+  L.push("## 조치사항");
+  L.push(rows.length ? rows.join("\n") : "- **--:--** 조치 내용 기재");
+  L.push("");
+  L.push("## 기타");
+  L.push(`**부상 정도**: ${$("inj").value || "미확인"}`);
+  L.push("");
+  L.push(`| 성명 | 전화번호 | 성별 | 장애 | 연령대 | 부상부위 | 부상종류 | 대물파손 | 직업 |`);
+  L.push(`| --- | --- | --- | --- | --- | --- | --- | --- | --- |`);
+  L.push(`| ${$("pname").value || "미고지"} | ${$("ptel").value || "미고지"} | ${$("psex").value} | 미확인 | ${$("page").value || "미확인"} | ${$("ppart").value || "미확인"} | ${$("pkind").value || "미확인"} | 해당없음 | 미고지 |`);
+  L.push("");
+  L.push(`**민원인 문의사항**: ${$("ask").value || "없음"}`);
+  L.push("");
+  L.push("## 확인 필요");
+  L.push("- 개인정보 마스킹(성명·연락처) 확인");
+  L.push("- 부상정도와 진단명 일치 여부");
+  L.push("- 사고원인 코드 확정");
+  $("out").textContent = L.join("\n");
+};
+
+$("copy").onclick = async () => {
+  try { await navigator.clipboard.writeText($("out").textContent); $("copy").textContent = "복사됨 ✓"; }
+  catch { $("copy").textContent = "복사 실패"; }
+  setTimeout(() => $("copy").textContent = "복사", 1400);
+};
+$("print").onclick = () => window.print();
+
+// 기본 행 3개 + 현재 시각 세팅
+const n = new Date();
+const now = `${n.getFullYear()}-${pad(n.getMonth()+1)}-${pad(n.getDate())}T${pad(n.getHours())}:${pad(n.getMinutes())}`;
+$("when").value = now;
+addRow(pad(n.getHours()) + ":" + pad(n.getMinutes()), "사고 발생");
+addRow(pad(n.getHours()) + ":" + pad(n.getMinutes()), "");
+</script>
+</body>
+</html>
