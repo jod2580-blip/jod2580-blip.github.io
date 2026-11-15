@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>두리 AI 조직도</title>
+<style>
+  :root{--bg:#0f1720;--card:#1a2733;--line:#2e4256;--txt:#e9eef5;--dim:#93a7bb;--acc:#4ec3ff;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR","Malgun Gothic",sans-serif;padding:18px 14px 40px;}
+  h1{font-size:23px;text-align:center;margin:6px 0 4px;letter-spacing:-.5px}
+  .sub{text-align:center;color:var(--dim);font-size:12.5px;margin-bottom:18px}
+  .node{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 auto;max-width:420px;text-align:center}
+  .ceo{background:linear-gradient(135deg,#ffd76a,#ffb020);color:#1a1200;border:none;font-weight:700;font-size:17px;padding:13px}
+  .boss{background:linear-gradient(135deg,#4ec3ff,#2b8fe0);color:#04202f;border:none;font-weight:700;font-size:17px;padding:14px}
+  .boss small{display:block;font-weight:500;font-size:11.5px;opacity:.8;margin-top:3px}
+  .arrow{width:2px;height:20px;background:var(--line);margin:0 auto}
+  .grid{display:grid;gap:10px;margin-top:2px}
+  @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:13px 14px}
+  .card .hd{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:700}
+  .card .nm{font-size:12px;font-weight:500;color:#7fd0a8}
+  .card .ds{font-size:12.5px;color:var(--dim);line-height:1.55;margin-top:7px}
+  .card .md{font-size:11px;color:#5f7c96;margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+  .note{margin-top:20px;background:#141f2a;border-left:4px solid var(--acc);border-radius:9px;padding:13px 15px;font-size:12.5px;color:#a9bccf;line-height:1.65}
+  .note b{color:var(--txt)}
+  .foot{text-align:center;color:#4a637a;font-size:11px;margin-top:18px}
+  a{color:var(--acc);text-decoration:none}
+</style></head><body>
+<h1>🐶 두리 AI 조직도</h1>
+<div class="sub">총괄 1명 + 실장 5명 · 필요할 때 호출하는 경량 구조</div>
+
+<div class="node ceo">👑 CEO — 문병철님</div>
+<div class="arrow"></div>
+<div class="node boss">🐶 총괄비서 두리<small>분류 · 호출 · 검수 · 최종 보고</small></div>
+<div class="arrow"></div>
+
+<div class="grid">
+  <div class="card"><div class="hd">🚉 역무실장 <span class="nm">규정이</span></div>
+    <div class="ds">법령·매뉴얼 조회, 동향보고 작성, 불시훈련 퀴즈 출제·채점, 역무 절차 정리</div>
+    <div class="md">company-docs/법령 · 동향보고 · memory/quiz</div></div>
+
+  <div class="card"><div class="hd">🌱 텃밭실장 <span class="nm">밭지기</span></div>
+    <div class="ds">재배일지 기록, 작기·수확 시기 판단, 병해충 진단, HA 센서 확인</div>
+    <div class="md">farm/journal · Home Assistant</div></div>
+
+  <div class="card"><div class="hd">📄 문서실장 <span class="nm">편집이</span></div>
+    <div class="ds">HWP·XLSX·PDF 처리, 감열 출력물(58/80mm), 안전 삽화·포스터</div>
+    <div class="md">python-hwpx · tools/thermal_md.py</div></div>
+
+  <div class="card"><div class="hd">🔍 조사실장 <span class="nm">살피미</span></div>
+    <div class="ds">온비드 입찰 분석, 오토마트 시세, 웹 리서치</div>
+    <div class="md">tools/onbid_api.py · automart</div></div>
+
+  <div class="card"><div class="hd">🗓 기록실장 <span class="nm">기억이</span></div>
+    <div class="ds">캘린더·알림(cron) 운영, 메모리 정리, 실행 확인 추적</div>
+    <div class="md">gcal · memory/</div></div>
+</div>
+
+<div class="note">
+  <b>운영 방식</b> — 두리가 요청을 분류해 필요한 실장만 서브에이전트로 호출하고, 결과를 검수해 한 번에 보고합니다. 5명을 항상 띄우지 않으므로 비용·관리 부담이 최소입니다.<br><br>
+  <b>승격 경로</b> — 자주 쓰는 실장은 전용 텔레그램 봇 + 독립 워크스페이스로 분리하는 진짜 조직도 형태로 확장할 수 있습니다.
+</div>
+<div class="foot">team/org.md · 직무 카드 5종 · 2026-11-15</div>
+</body></html>
