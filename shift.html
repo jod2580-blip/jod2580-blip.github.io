@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>근무·알람 자동화 폼</title>
+<style>
+  :root { --bg:#0f1720; --card:#1b2530; --go:#48bb78; --fg:#e6edf3; --muted:#8b9aa8; --line:#2c3a48; }
+  @media (prefers-color-scheme: light) { :root { --bg:#f4f6f8; --card:#fff; --fg:#1c2733; --muted:#67757f; --line:#dfe5ea; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Roboto,sans-serif;
+    line-height:1.5; -webkit-text-size-adjust:100%; }
+  header { padding:14px 16px 6px; max-width:640px; margin:0 auto; }
+  h1 { margin:0; font-size:20px; letter-spacing:-.5px; }
+  .sub { margin:3px 0 0; color:var(--muted); font-size:12px; }
+  .menu { display:flex; gap:6px; overflow-x:auto; padding:8px 0 4px; scrollbar-width:none; }
+  .menu::-webkit-scrollbar { display:none; }
+  .menu a { flex:0 0 auto; font-size:12.5px; font-weight:600; text-decoration:none; color:var(--fg);
+    background:var(--card); padding:6px 12px; border-radius:999px; box-shadow:0 1px 2px rgba(0,0,0,.16); }
+  .menu a.on { background:var(--go); color:#0b1420; }
+  main { max-width:640px; margin:0 auto; padding:0 12px 30px; }
+  h2 { font-size:13px; color:var(--muted); font-weight:600; margin:14px 4px 6px; letter-spacing:.3px; }
+  .card { background:var(--card); border-radius:14px; padding:12px 13px; margin:0 0 8px;
+    box-shadow:0 1px 3px rgba(0,0,0,.18); }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; }
+  .grid .full { grid-column:1 / -1; }
+  label.f { display:block; font-size:11.5px; color:var(--muted); margin:0 0 3px; font-weight:600; }
+  input, select { width:100%; font-size:14px; padding:8px 9px; border-radius:9px;
+    border:1px solid var(--line); background:var(--bg); color:var(--fg); }
+  .chk { display:flex; align-items:center; gap:7px; font-size:13.5px; margin:5px 0; }
+  .chk input { width:18px; height:18px; flex:0 0 auto; }
+  .chk .tm { width:76px; flex:0 0 auto; text-align:center; padding:5px 4px; }
+  .bar { display:flex; gap:7px; flex-wrap:wrap; margin:10px 0 4px; }
+  button { flex:1 1 46%; font-size:14px; font-weight:700; padding:11px 10px; border-radius:11px;
+    border:0; background:var(--go); color:#0b1420; cursor:pointer; }
+  button.ghost { background:var(--card); color:var(--fg); border:1px solid var(--line); }
+  button:active { transform:scale(.985); }
+  .outs { font-size:12.5px; color:var(--muted); }
+  .sum { background:var(--card); border-radius:14px; padding:11px 13px; margin:8px 0; font-size:13.5px; }
+  .sum b { color:var(--go); }
+  table { width:100%; border-collapse:collapse; font-size:12.5px; background:var(--card);
+    border-radius:12px; overflow:hidden; }
+  th, td { padding:6px 7px; border-bottom:1px solid var(--line); text-align:left; }
+  th { font-size:11px; color:var(--muted); font-weight:700; }
+  td.d { white-space:nowrap; }
+  .tA { color:#f6ad55; font-weight:700; }
+  .tB { color:#63b3ed; font-weight:700; }
+  .tO { color:var(--muted); }
+  .note { font-size:11.5px; color:var(--muted); margin:12px 4px 0; line-height:1.6; }
+  .note b { color:var(--fg); }
+  footer { max-width:640px; margin:0 auto; padding:6px 18px 34px; color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🕒 근무·알람 자동화</h1>
+  <p class="sub">6일주기 A·A·B·B·비·휴 → 알람 계산·캘린더 파일 생성 · 상수: tools/shift.py와 동일</p>
+  <nav class="menu">
+    <a href="index.html">🏠 홈</a>
+    <a href="calendar.html">📅 캘린더</a>
+    <a href="train.html">🚝 열차</a>
+    <a href="journal.html">🌱 재배일지</a>
+    <a href="ai.html">🤖 AI학습</a>
+    <a href="ai_report.html">📝 동향보고</a>
+    <a href="mental.html">🎾 멘탈</a>
+    <a href="shift.html" class="on">🕒 근무</a>
+    <a href="privacy.html">🔒 개인정보</a>
+  </nav>
+</header>
+<main>
+
+  <h2>1. 근무조 · 기간</h2>
+  <div class="card">
+    <div class="grid">
+      <div><label class="f">근무조(반)</label>
+        <select id="ban"><option>갑반</option><option>을반</option><option>병반</option></select></div>
+      <div><label class="f">주기</label>
+        <select id="cycleDisp" disabled><option>6일 · A A B B 비 휴</option></select></div>
+      <div><label class="f">기준일 (이 날의 근무를 앵커로)</label>
+        <input type="date" id="anchor" value="2026-09-01"></div>
+      <div><label class="f">기준일 근무</label>
+        <select id="anchorType"><option value="A">주A</option><option value="B">주B</option><option value="OFF">비번</option><option value="REST">휴무</option></select></div>
+      <div><label class="f">시작일</label><input type="date" id="start"></div>
+      <div><label class="f">종료일</label><input type="date" id="end"></div>
+    </div>
+  </div>
+
+  <h2>2. 알람 (필요한 것만 체크)</h2>
+  <div class="card">
+    <label class="chk"><input type="checkbox" id="a_wake" checked> 주A 기상 <input class="tm" id="t_wake" value="03:35"></label>
+    <label class="chk"><input type="checkbox" id="a_jaebi" checked> 지폐회수 (A근무 수요일) <input class="tm" id="t_jaebi" value="05:10"></label>
+    <label class="chk"><input type="checkbox" id="a_gateA" checked> 게이트근무 주A <input class="tm" id="t_gateA" value="08:20"></label>
+    <label class="chk"><input type="checkbox" id="a_gateB" checked> 게이트근무 주B <input class="tm" id="t_gateB" value="17:50"></label>
+    <label class="chk"><input type="checkbox" id="a_shift"> 근무 자체(주A/주B 종일) 도 함께</label>
+  </div>
+
+  <div class="bar">
+    <button id="calc">미리보기</button>
+    <button id="ics">📅 캘린더 파일 받기</button>
+    <button class="ghost" id="send">✈️ 두리에게 적용 요청</button>
+    <button class="ghost" id="copy">📋 설정 복사</button>
+  </div>
+
+  <div id="summary" class="sum">미리보기를 누르면 계산됩니다.</div>
+  <div id="tablewrap"></div>
+
+  <p class="note">
+    <b>캘린더에 넣는 방법 2가지</b><br>
+    ① <b>📅 캘린더 파일 받기</b> → 폰에서 파일 열기(또는 구글 캘린더 → 설정 → 가져오기) → 알람까지 그대로 들어감.<br>
+    ② <b>✈️ 두리에게 적용 요청</b> → 텔레그램 대화가 설정과 함께 열림 → 그대로 전송 → 두리가 캘린더에 직접 입력(수 분 내).<br>
+    ⚠️ 이미 있는 알람과 겹치면 중복 생성될 수 있으니, <b>이미 만든 기간은 피해서</b> 생성하세요.
+  </p>
+</main>
+<footer><p>대구교통공사 3호선 · 근무 상수(<code>tools/shift.py</code>)와 같은 규칙 · 문의: 텔레그램 두리</p></footer>
+<script>
+const $ = id => document.getElementById(id);
+const CYCLE = ["A","A","B","B","OFF","REST"];
+const LABEL = { A:"주A", B:"주B", OFF:"비번", REST:"휴무" };
+const WD = ["일","월","화","수","목","금","토"];
+const pad = n => String(n).padStart(2,"0");
+
+function ymd(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function parseD(v){ const [y,m,d] = v.split("-").map(Number); return new Date(y, m-1, d); }
+function addDays(d, n){ const x = new Date(d.getTime()); x.setDate(x.getDate()+n); return x; }
+function diffDays(a, b){ return Math.round((b - a) / 86400000); }
+function typeOf(d, anchor, anchorType){
+  const off = diffDays(anchor, d) % 6;
+  const base = CYCLE.indexOf(anchorType) + (off < 0 ? off + 6 : off);
+  return CYCLE[((base % 6) + 6) % 6];
+}
+
+function cfg(){
+  return {
+    ban: $("ban").value,
+    anchor: $("anchor").value,
+    anchorType: $("anchorType").value,
+    start: $("start").value,
+    end: $("end").value,
+    alarms: {
+      wake: $("a_wake").checked ? $("t_wake").value : null,
+      jaebi: $("a_jaebi").checked ? $("t_jaebi").value : null,
+      gateA: $("a_gateA").checked ? $("t_gateA").value : null,
+      gateB: $("a_gateB").checked ? $("t_gateB").value : null,
+    },
+    shiftAllday: $("a_shift").checked,
+  };
+}
+
+/* 알람 규칙: wake=주A 아무날, jaebi=주A 수요일, gateA=주A, gateB=주B */
+function alarmsOn(d, t, c){
+  const out = [];
+  if (t === "A" && c.alarms.wake) out.push(["⏰ 주A 기상", c.alarms.wake]);
+  if (t === "A" && c.alarms.jaebi && d.getDay() === 3) out.push(["💵 지폐회수", c.alarms.jaebi]);
+  if (t === "A" && c.alarms.gateA) out.push(["🚪 게이트근무", c.alarms.gateA]);
+  if (t === "B" && c.alarms.gateB) out.push(["🚪 게이트근무", c.alarms.gateB]);
+  return out;
+}
+
+function compute(c){
+  const a = parseD(c.anchor), s = parseD(c.start), e = parseD(c.end);
+  const rows = [];
+  if (e < s) return rows;
+  for (let d = new Date(s); d <= e; d = addDays(d, 1)){
+    const t = typeOf(d, a, c.anchorType);
+    rows.push({ d: new Date(d), t, al: alarmsOn(d, t, c) });
+  }
+  return rows;
+}
+
+function render(){
+  const c = cfg(), rows = compute(c);
+  if (!rows.length){ $("summary").textContent = "기간을 확인하세요(종료일이 시작일보다 빠름)."; $("tablewrap").innerHTML=""; return rows; }
+  const nA = rows.filter(r => r.t === "A").length, nB = rows.filter(r => r.t === "B").length;
+  const nAl = rows.reduce((s, r) => s + r.al.length, 0);
+  const first = rows.find(r => r.t === "A"), last = rows.find(r => r.t === "B");
+  $("summary").innerHTML =
+    `<b>${c.ban}</b> · ${c.start} ~ ${c.end} · 주A <b>${nA}</b>일 / 주B <b>${nB}</b>일 · 알람 <b>${nAl}</b>건`
+    + (first ? `<br>첫 주A: ${ymd(first.d)} (${WD[first.d.getDay()]})` : "")
+    + (last ? ` / 첫 주B: ${ymd(last.d)} (${WD[last.d.getDay()]})` : "");
+
+  const show = rows.slice(0, 60);
+  $("tablewrap").innerHTML = `<table><thead><tr><th>날짜</th><th>요일</th><th>근무</th><th>알람</th></tr></thead><tbody>`
+    + show.map(r => `<tr><td class="d">${ymd(r.d).slice(5)}</td><td>${WD[r.d.getDay()]}</td>
+        <td class="t${r.t}">${LABEL[r.t]}</td>
+        <td>${r.al.map(x => x[0].replace(/^[^ ]+ /, "") + " " + x[1]).join("<br>") || "-"}</td></tr>`).join("")
+    + `</tbody></table>` + (rows.length > 60 ? `<p class="note">…외 ${rows.length-60}일 생략(파일에는 전부 포함)</p>` : "");
+  return rows;
+}
+
+function icsTime(d, hm){
+  const [h, m] = hm.split(":").map(Number);
+  return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}T${pad(h)}${pad(m)}00`;
+}
+function plus30(hm){
+  const [h, m] = hm.split(":").map(Number);
+  const t = (h * 60 + m + 30) % 1440;
+  return `${pad(Math.floor(t/60))}${pad(t%60)}00`;
+}
+function stamp(){
+  const n = new Date();
+  return `${n.getUTCFullYear()}${pad(n.getUTCMonth()+1)}${pad(n.getUTCDate())}T${pad(n.getUTCHours())}${pad(n.getUTCMinutes())}${pad(n.getUTCSeconds())}Z`;
+}
+
+function buildICS(c, rows){
+  const st = stamp(), L = [];
+  L.push("BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//doori//shift-alarm//KO",
+         "CALSCALE:GREGORIAN", "METHOD:PUBLISH", "X-WR-CALNAME:근무알람(" + c.ban + ")",
+         "BEGIN:VTIMEZONE", "TZID:Asia/Seoul", "BEGIN:STANDARD", "DTSTART:19700101T000000",
+         "TZOFFSETFROM:+0900", "TZOFFSETTO:+0900", "TZNAME:KST", "END:STANDARD", "END:VTIMEZONE");
+  rows.forEach(r => {
+    const ds = ymd(r.d);
+    if (c.shiftAllday && (r.t === "A" || r.t === "B")){
+      L.push("BEGIN:VEVENT", `UID:shift-${ds}-${r.t}@doori`,
+             `DTSTAMP:${st}`, `DTSTART;VALUE=DATE:${ds.replace(/-/g,"")}`,
+             `DTEND;VALUE=DATE:${ymd(addDays(r.d,1)).replace(/-/g,"")}`,
+             `SUMMARY:${LABEL[r.t]} 근무 (${c.ban})`, "TRANSP:TRANSPARENT", "END:VEVENT");
+    }
+    r.al.forEach(([name, hm], i) => {
+      L.push("BEGIN:VEVENT", `UID:shift-${ds}-${i}-${hm.replace(":","")}@doori`,
+             `DTSTAMP:${st}`, `DTSTART;TZID=Asia/Seoul:${icsTime(r.d, hm)}`,
+             `DTEND;TZID=Asia/Seoul:${ds.replace(/-/g,"")}T${plus30(hm)}`,
+             `SUMMARY:${name} (${c.ban})`,
+             "BEGIN:VALARM", "TRIGGER:PT0M", "ACTION:DISPLAY", `DESCRIPTION:${name}`, "END:VALARM",
+             "END:VEVENT");
+    });
+  });
+  L.push("END:VCALENDAR");
+  return L.join("\r\n");
+}
+
+function payload(c){
+  const al = Object.entries(c.alarms).filter(([,v]) => v).map(([k]) => k).join(",") || "-";
+  return `SHIFT v1 ban=${c.ban} anchor=${c.anchor} anchorType=${c.anchorType} `
+       + `start=${c.start} end=${c.end} alarms=${al} shiftAllday=${c.shiftAllday ? 1 : 0} `
+       + `t=${[c.alarms.wake, c.alarms.jaebi, c.alarms.gateA, c.alarms.gateB].map(x => x || "-").join(",")}`;
+}
+
+function download(name, text){
+  const blob = new Blob([text], { type: "text/calendar;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+
+$("calc").onclick = () => { render(); };
+
+$("ics").onclick = () => {
+  const c = cfg(), rows = compute(c);
+  if (!rows.length) return;
+  render();
+  download(`근무알람_${c.ban}_${c.start}_${c.end}.ics`, buildICS(c, rows));
+};
+
+$("copy").onclick = async () => {
+  const txt = payload(cfg());
+  try { await navigator.clipboard.writeText(txt); $("copy").textContent = "복사됨 ✓"; }
+  catch { $("copy").textContent = "복사 실패"; }
+  setTimeout(() => ($("copy").textContent = "📋 설정 복사"), 1500);
+};
+
+$("send").onclick = async () => {
+  const c = cfg(), rows = compute(c);
+  if (!rows.length) return;
+  render();
+  const txt = payload(c);
+  try { await navigator.clipboard.writeText(txt); } catch {}
+  location.href = "https://t.me/no3_line_bot?text=" + encodeURIComponent(txt);
+};
+
+/* 초기값: 오늘 ~ +3개월, 반은 마지막 선택 기억 */
+(function init(){
+  const n = new Date();
+  $("start").value = ymd(n);
+  $("end").value = ymd(addDays(n, 92));
+  const saved = localStorage.getItem("duri_ban") || "병반";
+  if ([...$("ban").options].some(o => o.value === saved)) $("ban").value = saved;
+  $("ban").onchange = () => localStorage.setItem("duri_ban", $("ban").value);
+  render();
+})();
+</script>
+</body>
+</html>
