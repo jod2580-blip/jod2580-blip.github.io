@@ -79,8 +79,8 @@
     <a href="calendar.html">📅 캘린더</a>
     <a href="train.html">🚝 열차</a>
     <a href="journal.html">🌱 재배일지</a>
+    <a href="ai.html" class="on">🤖 AI학습</a>
     <a href="mental.html">🎾 멘탈</a>
-    <a href="team.html">🐶 조직도</a> · <a href="ai.html" class="on">🤖 AI학습</a>
     <a href="privacy.html">🔒 개인정보</a>
   </nav>
 </header>
@@ -93,6 +93,8 @@
         <select id="wx"><option>맑음</option><option>흐림</option><option>비</option><option>눈</option><option>미확인</option></select></div>
       <div><label class="f">역</label>
         <select id="stn"><option>범물</option><option>수성못</option><option>지산</option><option>황금</option><option>어린이세상</option><option>용지</option></select></div>
+      <div><label class="f">근무조(반)</label>
+        <select id="ban"><option>갑반</option><option>을반</option><option>병반</option></select></div>
       <div class="full"><label class="f">장소 (깊이순: 설비 &gt; 상세 &gt; 세부)</label>
         <input id="place" placeholder="예: 에스컬레이터 &gt; 에스컬레이터#5 &gt; 초입"></div>
       <div><label class="f">사고유형</label>
@@ -196,7 +198,7 @@ function collect(){
     .filter(r => r.c);
   return {
     when: fmtWhen($("when").value),
-    wx: $("wx").value, stn: $("stn").value, place,
+    wx: $("wx").value, stn: $("stn").value, ban: $("ban").value, place,
     type: ($("type").value || "").trim() || "미기재",
     c1: ($("cause1").value || "").trim() || "미확인",
     c2: ($("cause2").value || "").trim(),
@@ -225,9 +227,10 @@ function titleOf(s){
 function toMarkdown(s){
   const L = [];
   L.push(`# 동향보고 초안 — ${s.stn}역 ${s.type} 사고`, "");
-  L.push(`- **보고일**: ${s.when.slice(0, 10)}`, `- **보고자**: 수성못관리역장(대) ○○○`, "");
+  L.push(`- **보고일**: ${s.when.slice(0, 10)}`, `- **보고자**: 수성못관리역장(대) ○○○ (${s.ban})`, "");
   L.push("## 제목", titleOf(s), "", "## 개요", "| 항목 | 내용 |", "| --- | --- |");
   L.push(`| 일시 | ${s.when} (${s.wx}) |`);
+  L.push(`| 근무조(반) | ${s.ban} |`);
   L.push(`| 장소 | 3호선 > ${s.stn} > ${s.place || "미기재"} |`);
   L.push(`| 사고유형 | ${s.type} |`);
   L.push(`| 사고원인 | ${s.c1}${s.c2 ? " > " + s.c2 : ""} |`);
@@ -261,12 +264,13 @@ function toHtml(s){
 
   return `
   <div class="doc-h">동 향 보 고</div>
-  <div class="doc-meta"><span>${esc(s.when.slice(0, 10))}</span><span>보고자: 수성못관리역장(대) ○○○</span></div>
+  <div class="doc-meta"><span>${esc(s.when.slice(0, 10))}</span><span>보고자: 수성못관리역장(대) ○○○ · ${esc(s.ban)}</span></div>
   <div class="doc-title">${esc(titleOf(s))}</div>
 
   <h3>1. 개요</h3>
   <table>
     ${kv("일시", `${s.when} (${s.wx})`)}
+    ${kv("근무조(반)", s.ban)}
     ${kv("장소", `3호선 > ${s.stn} > ${s.place || "미기재"}`)}
     ${kv("사고유형", s.type)}
     ${kv("사고원인", `${s.c1}${s.c2 ? " > " + s.c2 : ""}`)}
@@ -326,6 +330,10 @@ $("print").onclick = () => { if (!MD) { $("gen").click(); setTimeout(() => windo
 
 const n = new Date();
 $("when").value = `${n.getFullYear()}-${pad(n.getMonth()+1)}-${pad(n.getDate())}T${pad(n.getHours())}:${pad(n.getMinutes())}`;
+// 근무조(반) 기억 — 한 번 고르면 다음에도 같은 반으로 열림
+const savedBan = localStorage.getItem("duri_ban");
+if (savedBan && [...$("ban").options].some(o => o.value === savedBan)) $("ban").value = savedBan;
+$("ban").onchange = () => localStorage.setItem("duri_ban", $("ban").value);
 addRow(pad(n.getHours()) + ":" + pad(n.getMinutes()), "사고 발생");
 addRow("", "");
 </script>
