@@ -131,7 +131,8 @@
     <textarea id="sendText" rows="3" readonly style="width:100%;font-size:12.5px;padding:8px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--fg);word-break:break-all"></textarea>
     <p id="sendHint" class="note" style="margin:6px 2px"></p>
     <div class="bar" style="margin:4px 0 0">
-      <button id="tgOpen">✈️ 텔레그램 열기</button>
+      <button id="tgShare">✈️ 텔레그램으로 바로 보내기</button>
+      <button class="ghost" id="tgOpen">대화만 열기</button>
       <button class="ghost" id="copy2">📋 다시 복사</button>
     </div>
   </div>
@@ -352,6 +353,12 @@ $("send").onclick = async () => {
     : "아래 문장을 길게 눌러 '복사' 한 뒤, '텔레그램 열기'에서 붙여넣고 전송하세요.";
   $("sendPanel").scrollIntoView({ behavior: "smooth", block: "center" });
   try { $("sendText").select(); } catch {}
+};
+
+$("tgShare").onclick = () => {
+  const v = $("sendText").value;
+  const url = "https://t.me/share/url?url=" + encodeURIComponent(v) + "&text=" + encodeURIComponent(v);
+  window.open(url, "_blank");
 };
 
 $("tgOpen").onclick = () => { window.open("https://t.me/no3_line_bot", "_blank"); };
