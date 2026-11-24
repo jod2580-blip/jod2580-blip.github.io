@@ -126,6 +126,16 @@
   <div id="summary" class="sum">미리보기를 누르면 계산됩니다.</div>
   <div id="tablewrap"></div>
 
+  <div id="sendPanel" class="card" style="display:none;border:1px solid #48bb78">
+    <label class="f">전송할 설정 (텔레그램에 붙여넣기)</label>
+    <textarea id="sendText" rows="3" readonly style="width:100%;font-size:12.5px;padding:8px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--fg);word-break:break-all"></textarea>
+    <p id="sendHint" class="note" style="margin:6px 2px"></p>
+    <div class="bar" style="margin:4px 0 0">
+      <button id="tgOpen">✈️ 텔레그램 열기</button>
+      <button class="ghost" id="copy2">📋 다시 복사</button>
+    </div>
+  </div>
+
   <p class="note">
     <b>캘린더에 넣는 방법 2가지</b><br>
     ① <b>📅 캘린더 파일 받기</b> → 폰에서 파일 열기(또는 구글 캘린더 → 설정 → 가져오기) → 알람까지 그대로 들어감.<br>
@@ -333,8 +343,24 @@ $("send").onclick = async () => {
   if (!rows.length) return;
   render();
   const txt = payload(c);
-  try { await navigator.clipboard.writeText(txt); } catch {}
-  location.href = "https://t.me/no3_line_bot?text=" + encodeURIComponent(txt);
+  let copied = false;
+  try { await navigator.clipboard.writeText(txt); copied = true; } catch {}
+  $("sendText").value = txt;
+  $("sendPanel").style.display = "block";
+  $("sendHint").textContent = copied
+    ? "설정이 복사됐어요 → '텔레그램 열기' 후 입력창에 붙여넣고 전송하면 두리가 캘린더에 넣어줍니다."
+    : "아래 문장을 길게 눌러 '복사' 한 뒤, '텔레그램 열기'에서 붙여넣고 전송하세요.";
+  $("sendPanel").scrollIntoView({ behavior: "smooth", block: "center" });
+  try { $("sendText").select(); } catch {}
+};
+
+$("tgOpen").onclick = () => { window.open("https://t.me/no3_line_bot", "_blank"); };
+
+$("copy2").onclick = async () => {
+  const v = $("sendText").value;
+  try { await navigator.clipboard.writeText(v); $("copy2").textContent = "복사됨 ✓"; }
+  catch { $("sendText").select(); $("copy2").textContent = "길게 눌러 복사"; }
+  setTimeout(() => ($("copy2").textContent = "📋 다시 복사"), 1800);
 };
 
 $("offAdd").onclick = () => {
