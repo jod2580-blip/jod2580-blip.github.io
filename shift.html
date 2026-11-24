@@ -101,7 +101,10 @@
           <option>자녀돌봄휴가</option><option>공가</option><option>연차</option>
           <option>장기재직</option><option>기타</option>
         </select></div>
-      <div class="full"><button class="ghost" id="offAdd">+ 휴무일 추가</button></div>
+      <div class="full" style="display:flex;gap:7px">
+        <button class="ghost" id="offAdd" style="flex:2 1 60%">+ 휴무일 추가</button>
+        <button class="ghost" id="offClear" style="flex:1 1 34%">🗑 전체 지우기</button>
+      </div>
     </div>
     <div id="offList" class="chips"></div>
     <p class="note" style="margin:8px 2px 0">입력한 날은 <b>근무·알람 계산에서 빠지고</b>, 종일 <b>휴무(종류)</b> 일정으로 함께 저장됩니다.</p>
@@ -368,6 +371,12 @@ $("copy2").onclick = async () => {
   try { await navigator.clipboard.writeText(v); $("copy2").textContent = "복사됨 ✓"; }
   catch { $("sendText").select(); $("copy2").textContent = "길게 눌러 복사"; }
   setTimeout(() => ($("copy2").textContent = "📋 다시 복사"), 1800);
+};
+
+$("offClear").onclick = () => {
+  if (!OFF.length) return;
+  if (!confirm("휴무일 목록 " + OFF.length + "건을 모두 지울까요?\n(캘린더에 이미 등록된 휴무는 그대로 남습니다)")) return;
+  OFF = []; saveOff(); render();
 };
 
 $("offAdd").onclick = () => {
